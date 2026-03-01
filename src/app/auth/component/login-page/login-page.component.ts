@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -18,7 +19,7 @@ export class LoginPageComponent  implements OnInit {
     loginForm!: FormGroup;
   submitted = false;
   
-  constructor(private fb: FormBuilder,private authService:AuthService ) {
+  constructor(private fb: FormBuilder,private authService:AuthService,private router:Router ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -32,17 +33,25 @@ export class LoginPageComponent  implements OnInit {
   onSubmit() {
      this.login(this.loginForm.value)
 
-    console.log('Login Data:', this.loginForm.value);
+   
 
     // 👉 yahin API call hogi
   }
-  login(body:any){
-    this.authService.login(body).subscribe({
-      next:(res:any)=>{
-      if(res){
-        localStorage.setItem('token',res.body.token)
-      }}
-    })
+login(body: any) {
+  this.authService.login(body).subscribe({
+    next: (res: any) => {
+      if (res) {
 
-  }
+ 
+        this.authService.setTokenData(res.body.token);
+          setTimeout(() => {
+        this.router.navigateByUrl('/home');
+      }, 0);
+      }
+    },
+    error: (err) => {
+      console.error('Login failed', err);
+    }
+  });
+}
 }
