@@ -39,8 +39,9 @@ export class LoginPageComponent  implements OnInit {
   login(body:any){
     this.authService.login(body).subscribe({
       next:(res:any)=>{
-        console.log(res)
-      }
+      if(res){
+        localStorage.setItem('token',res.body.token)
+      }}
     })
 
   }
