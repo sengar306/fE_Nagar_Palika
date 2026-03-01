@@ -15,8 +15,8 @@ FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
 
-# 🔥 Angular 17+ ke liye
-COPY --from=build /app/dist/*/browser /usr/share/nginx/html
+# 🔥 Ionic build output location
+COPY --from=build /app/www /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
