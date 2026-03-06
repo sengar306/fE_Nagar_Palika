@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl:'https://be-nagar-palika.onrender.com'
+  baseUrl:' http://localhost:8081'
 
 };
 

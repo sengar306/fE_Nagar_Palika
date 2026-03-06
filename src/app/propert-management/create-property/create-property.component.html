@@ -1,0 +1,43 @@
+<div class="modal-overlay">
+  <div class="modal-container">
+
+    <div class="modal-header">
+      <h2>{{heading}}</h2>
+      <span class="close-btn" (click)="closeModal()">✖</span>
+    </div>
+
+    <div class="modal-body">
+
+      @if(step === 1){
+     <app-basic-property-details></app-basic-property-details>
+      }
+
+      @if(step === 2){
+  <app-additional-parameters></app-additional-parameters>
+      }
+      @if(step === 3){ 
+      <app-property-floor-details></app-property-floor-details>
+      }
+
+      @if(step === 4){
+        <app-annual-calculation></app-annual-calculation>
+      }
+
+    </div>
+
+      <div class="modal-footer">
+
+        <button (click)="prevStep()" [disabled]="step === 1">Back</button>
+
+        @if(step < 4){
+          <button (click)="nextStep()">Next</button>
+        }
+
+        @if(step === 4){
+          <button>Submit</button>
+        }
+
+      </div>
+
+  </div>
+</div>

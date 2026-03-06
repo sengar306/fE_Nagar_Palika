@@ -57,3 +57,20 @@ body {
 *{
     color: black;
 }
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #000;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 3px rgba(108, 99, 255, 0.4);
+}
