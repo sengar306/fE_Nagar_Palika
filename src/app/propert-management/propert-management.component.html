@@ -1,0 +1,9 @@
+<button (click)="openModal()">Create Property</button>
+
+@if(isModal) {
+  <div class="modal-overlay">
+    <div class="modal-box">
+      <app-create-property (close)="closeModal()"></app-create-property>
+    </div>
+  </div>
+}
