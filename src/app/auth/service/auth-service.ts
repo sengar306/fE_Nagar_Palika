@@ -22,4 +22,7 @@ export class AuthService {
   decodeToken(token:any){
     return jwtDecode(token)
   }
+  getTokendata(){
+    return jwtDecode(localStorage.getItem('token')||'')
+  }
 }

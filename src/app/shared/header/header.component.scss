@@ -1,7 +1,7 @@
 .header {
   height: 60px;
-  background: #fff;
-  display: flex;
+  // background: #fff;
+  display: flex;  
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
@@ -24,6 +24,7 @@
 
 .profile {
   font-weight: 500;
+margin-left: auto;
 }
 
 /* MOBILE */
@@ -31,4 +32,17 @@
   .menu-btn {
     display: block;
   }
+}
+.profile{
+display:flex;
+align-items:center;
+gap:10px;
+margin-left:auto;
+}
+
+.profile-img{
+width:35px;
+height:35px;
+border-radius:50%;
+object-fit:cover;
 }

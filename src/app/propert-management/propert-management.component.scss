@@ -28,3 +28,32 @@
     width:90%;
   }
 }   
+/* Mobile friendly pagination tweaks */
+.ag-theme-alpine {
+  font-size: 14px; /* thoda chhota font mobile ke liye */
+
+  .ag-paging-panel {
+    display: flex;
+    flex-wrap: wrap; /* Buttons wrap ho jayenge small screen pe */
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .ag-paging-button, 
+  .ag-page-size-panel, 
+  .ag-paging-description {
+    min-width: auto;
+    white-space: nowrap;
+  }
+
+  /* Pagination buttons ko chhota karo mobile me */
+  .ag-paging-button {
+    padding: 4px 6px;
+    font-size: 13px;
+  }
+}
+
+/* Optional: horizontal scroll bar styling */
+.ag-theme-alpine .ag-root-wrapper {
+  overflow-x: auto;
+}

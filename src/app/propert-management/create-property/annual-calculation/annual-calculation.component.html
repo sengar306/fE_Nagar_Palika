@@ -1,3 +1,48 @@
-<p>
-  annual-calculation works!
-</p>
+<div class="section-wrapper">
+  <div class="form-grid"[formGroup]="propertyForm">
+
+    <!-- Arrear House Tax -->
+    <div class="form-group">
+      <label>Arrear House Tax</label>
+      <input type="number" placeholder="Enter Arrear House Tax" formControlName="arrearHouseTax">
+    </div>
+
+    <!-- Arrear Water Tax -->
+    <div class="form-group">
+      <label>Arrear Water Tax</label>
+      <input type="number" placeholder=" Enter Arrear Water Tax" formControlName="arrearWaterTax">
+    </div>
+
+    <!-- Arrear Sewer -->
+    <div class="form-group">
+      <label>Arrear Sewer / Drainage Tax</label>
+      <input type="number" placeholder="Arrear Sewer / Drainage Tax" formControlName="arrearSewerTax">
+    </div>
+
+    <!-- Proposed ARV -->
+    <div class="form-group">
+      <label>Proposed ARV</label>
+      <input type="number" placeholder="Enter Proposed ARV" formControlName="proposedArv">
+    </div>
+
+    <!-- Surcharge House -->
+    <div class="form-group">
+      <label>Surcharge House Tax</label>
+      <input type="number" placeholder="Enter Surcharge House Tax" formControlName="surchargeHouseTax">
+    </div>
+
+    <!-- Surcharge Water -->
+    <div class="form-group">
+      <label>Surcharge Water Tax</label>
+      <input type="number" placeholder="Enter Surcharge Water Tax" formControlName="surchargeWaterTax">
+    </div>
+
+    <!-- Surcharge Sewer -->
+    <div class="form-group">
+      <label>Surcharge Sewer / Drainage Tax</label>
+      <input type="number" placeholder="Enter Surcharge Sewer / Drainage Tax" formControlName="surchargeSewerTax">
+    </div>
+
+  </div>
+
+</div>

@@ -1,55 +1,92 @@
-<div class="section-container">
+<div class="section-wrapper" [formGroup]="propertyForm">
 
-<div class="form-grid">
+  <div class="form-grid">
 
-<div class="form-group">
-<label>Property Type</label>
-<select>
-<option>Select Property Type</option>
-</select>
-</div>
+    <!-- Property Type -->
+    <div class="form-group">
+      <label>Property Type</label>
+      <select formControlName="propertyTypeId">
 
-<div class="form-group">
-<label>Property Category</label>
-<select>
-<option>Residential</option>
-<option>Commercial</option>
-</select>
-</div>
+        <option [ngValue]="null">Select Property Type</option>
 
-<div class="form-group">
-<label>ARV Residential</label>
-<input type="text" placeholder="ARV Residential">
-</div>
+        @for(type of propertyTypes; track type){
+        <option [ngValue]="type">
+          {{type}}
+        </option>
+        }
 
-<div class="form-group">
-<label>ARV Effective From</label>
-<input type="date">
-</div>
+      </select>
+    </div>
 
-<div class="form-group full-width">
-<label>Applicable Taxes</label>
+    <!-- Property Category -->
+    <div class="form-group">
+      <label>Property Category</label>
 
-<div class="checkbox-group">
-<label><input type="checkbox"> House Tax</label>
-<label><input type="checkbox"> Water Tax</label>
-<label><input type="checkbox"> Sewer / Drainage Tax</label>
-</div>
+      <select formControlName="propertyCategoryId">
 
-</div>
+        <option [ngValue]="null">Select Category</option>
 
-<div class="form-group">
-<label>Attach Documents</label>
-<input type="file">
-</div>
+        @for(category of propertyCategories; track category){
+        <option [ngValue]="category">
+          {{category}}
+        </option>
+        }
 
-<div class="form-group">
-<label>
-<input type="checkbox">
-Deactivate Selected Old Property
-</label>
-</div>
+      </select>
+    </div>
 
-</div>
+    <!-- ARV Residential -->
+    <div class="form-group">
+      <label>ARV Residential</label>
+      <input type="text" formControlName="arvResidential" placeholder="ARV Residential">
+    </div>
+
+    <!-- ARV Effective -->
+    <div class="form-group">
+      <label>ARV Effective From</label>
+      <input type="date" formControlName="arvEffectiveFrom">
+    </div>
+
+    <!-- Applicable Taxes -->
+    <div class="form-group full-row">
+
+      <label>Applicable Taxes</label>
+
+      <div class="checkbox-group">
+
+        <label class="checkbox-item">
+          <input type="checkbox" formControlName="houseTax">
+          House Tax
+        </label>
+
+        <label class="checkbox-item">
+          <input type="checkbox" formControlName="waterTax">
+          Water Tax
+        </label>
+
+        <label class="checkbox-item">
+          <input type="checkbox" formControlName="sewerTax">
+          Sewer / Drainage Tax
+        </label>
+
+      </div>
+
+    </div>
+
+    <!-- Attach Documents -->
+    <div class="form-group">
+      <label>Attach Documents</label>
+      <input type="file">
+    </div>
+
+    <!-- Deactivate -->
+    <div class="form-group">
+      <label class="checkbox-item">
+        <input type="checkbox" formControlName="deactivateOldProperty">
+        Deactivate Selected Old Property
+      </label>
+    </div>
+
+  </div>
 
 </div>
