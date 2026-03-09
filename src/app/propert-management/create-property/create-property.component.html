@@ -9,35 +9,53 @@
     <div class="modal-body">
 
       @if(step === 1){
-     <app-basic-property-details></app-basic-property-details>
+     <app-basic-property-details [propertyForm]="propertyForm"></app-basic-property-details>
       }
 
       @if(step === 2){
-  <app-additional-parameters></app-additional-parameters>
-      }
-      @if(step === 3){ 
-      <app-property-floor-details></app-property-floor-details>
+  <app-additional-parameters [propertyForm]="propertyForm"></app-additional-parameters>
       }
 
-      @if(step === 4){
-        <app-annual-calculation></app-annual-calculation>
+      @if(step === 3){
+        <app-annual-calculation [propertyForm]="propertyForm"></app-annual-calculation>
       }
 
     </div>
+<div class="modal-footer">
 
-      <div class="modal-footer">
+  <!-- Left Side -->
+  <div class="left-buttons">
+    <button class="btn btn-back"
+            (click)="prevStep()"
+            [disabled]="step === 1">
+      Back
+    </button>
+  </div>
 
-        <button (click)="prevStep()" [disabled]="step === 1">Back</button>
+  <!-- Right Side -->
+  <div class="right-buttons">
 
-        @if(step < 4){
-          <button (click)="nextStep()">Next</button>
-        }
+    <button class="btn btn-clear"
+           >
+      Clear
+    </button>
 
-        @if(step === 4){
-          <button>Submit</button>
-        }
+    @if(step < 3){
+    <button class="btn btn-primary"
+            (click)="nextStep()">
+      Next
+    </button>
+    }
 
-      </div>
+    @if(step === 3){
+    <button class="btn btn-primary" (click)="submit()">
+      Submit
+    </button>
+    }
+
+  </div>
+
+</div>
 
   </div>
 </div>

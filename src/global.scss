@@ -1,76 +1,204 @@
-body {
-  margin: 0;
-  background-color: #eef1f4;
-  font-family: "Inter", sans-serif;
+
+/* RESET */
+
+body{
+margin:0;
+font-family:"Inter",sans-serif;
+background:#eef1f4;
+color:#222;
 }
 
-.page-wrapper {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* WRAPPER */
+
+.page-wrapper{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-.login-card {
-  width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+/* LOGIN CARD */
+
+.login-card{
+width:100%;
+max-width:420px;
+background:#ffffff;
+border-radius:16px;
+padding:40px;
+box-shadow:0 20px 40px rgba(0,0,0,0.08);
 }
 
-.login-logo {
-  text-align: center;
-  margin-bottom: 10px;
+/* LOGO */
+
+.login-logo{
+text-align:center;
+margin-bottom:10px;
 }
 
-.login-logo span {
-  font-size: 22px;
-  font-weight: 700;
-  margin-left: 8px;
+.login-logo span{
+font-size:22px;
+font-weight:700;
+margin-left:8px;
 }
 
-.login-subtitle {
-  text-align: center;
-  color: #6c757d;
-  margin-bottom: 25px;
+.login-subtitle{
+text-align:center;
+color:#6c757d;
+margin-bottom:25px;
 }
 
-.form-control {
-  border-radius: 8px;
-  padding: 10px 14px;
+/* FORM */
+
+.form-control{
+border-radius:8px;
+padding:10px 14px;
 }
 
-.btn-primary {
-  background-color: #0d6efd;
-  border-radius: 25px;
-  padding: 10px;
-  font-weight: 600;
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: 25px;
-  font-size: 14px;
-}
-*{
-    color: black;
-}
 input,
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #dcdcdc;
-  border-radius: 6px;
-  background-color: #ffffff;
-  color: #000;
-  font-size: 14px;
+select{
+width:100%;
+padding:10px;
+border:1px solid #dcdcdc;
+border-radius:6px;
+background:#fff;
+color:#000;
+font-size:14px;
 }
 
 input:focus,
-select:focus {
-  outline: none;
-  border-color: #6c63ff;
-  box-shadow: 0 0 3px rgba(108, 99, 255, 0.4);
+select:focus{
+outline:none;
+border-color:#6c63ff;
+box-shadow:0 0 3px rgba(108,99,255,0.4);
+}
+
+/* BUTTONS */
+
+.btn{
+padding:10px 24px;
+border:none;
+border-radius:8px;
+font-size:14px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn-primary{
+background:#2563eb;
+color:white;
+}
+
+.btn-primary:hover{
+background:#1e4ed8;
+}
+
+.btn-back{
+background:#e5e7eb;
+color:#333;
+}
+
+.btn-clear{
+background:#6b7280;
+color:white;
+}
+
+/* MODAL FOOTER */
+
+.modal-footer{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+border-top:1px solid #eee;
+gap:10px;
+}
+
+/* HEADER */
+
+.header{
+background:white;
+border-bottom:1px solid #ddd;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+background:#ffffff;
+}
+
+/* ========================= */
+/* DARK THEME */
+/* ========================= */
+
+.dark-theme{
+background:#000;
+color:white;
+}
+
+/* HEADER */
+
+.dark-theme .header{
+background:#111;
+border-bottom:1px solid #333;
+}
+
+/* SIDEBAR */
+
+.dark-theme .sidebar{
+background:#111;
+color:white;
+}
+
+/* INPUTS */
+
+.dark-theme input,
+.dark-theme select{
+background:#222;
+color:white;
+border:1px solid #444;
+}
+
+/* CARD */
+
+.dark-theme .login-card{
+background:#1a1a1a;
+color:white;
+}
+
+/* BUTTONS */
+
+.dark-theme .btn{
+background:#333;
+color:white;
+}
+/* Universal AG Grid Styling for Angular/Ionic */
+
+/* Theme container must always have explicit height & width */
+.ag-theme-alpine,
+.ag-theme-alpine * {
+  box-sizing: border-box;   /* fix width/height calculations */
+}
+
+/* Force grid to take full parent size */
+.ag-theme-alpine {
+  height: 500px;           /* default height, override inline if needed */
+  width: 100%;
+  display: block;
+}
+
+/* Grid inner wrapper */
+.ag-root-wrapper {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Fix header height & scroll */
+.ag-header,
+.ag-body-viewport {
+  box-sizing: border-box;
+}
+
+/* Optional: scrollbar always visible */
+.ag-body-viewport {
+  overflow: auto;
 }

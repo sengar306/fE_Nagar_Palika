@@ -1,92 +1,129 @@
-<div class="form-wrapper">
+<div class="form-wrapper" [formGroup]="propertyForm">
 
-<div class="form-grid">
+  <div class="form-grid">
 
-<!-- Zone -->
-<div class="form-group">
-<label>Zone</label>
-<select>
-<option>Select Zone</option>
+    <!-- Zone -->
+   <div class="form-group">
+  <label>Zone</label>
+
+<select formControlName="zone">
+
+<option [ngValue]="null">Select Zone</option>
+
+@for(zone of zones; track zone.id){
+<option [ngValue]="zone">
+{{zone.name}}
+</option>
+}
+
 </select>
 </div>
 
-<!-- Ward -->
-<div class="form-group">
-<label>Ward</label>
-<select>
-<option>Select Ward</option>
+    <!-- Ward -->
+    <div class="form-group">
+      <label>Ward</label>
+ <select formControlName="ward">
+
+<option >Select Ward</option>
+
+@for(ward of wards; track ward.id){
+<option   [ngValue]="ward" >
+{{ward.name}}
+</option>
+}
+
 </select>
-</div>
+    </div>
 
-<!-- Locality -->
-<div class="form-group">
-<label>Locality</label>
-<select>
-<option>Select Locality</option>
-</select>
-</div>
+    <!-- Locality -->
+    <div class="form-group">
+      <label>Locality</label>
+      <select formControlName="locality">
+        <option  >Select Locality</option>
 
-<!-- PTIN -->
-<div class="form-group ptin-group">
-<label class="checkbox">
-<input type="checkbox">
-<span>PTIN (Click For Manual)</span>
-</label>
-<input type="text" placeholder="Enter PTIN">
-</div>
+        @for(locality of localities; track locality.id){
+        <option [ngValue]="locality" >
+          {{locality.name}}
+        </option>
+        }
 
-<!-- Ownership -->
-<div class="form-group">
-<label>Property OwnerShip</label>
-<select>
-<option>Select OwnerShip</option>
-</select>
-</div>
-<!-- Owner Name -->
-<div class="form-group">
-<label>Owner Name</label>
-<input type="text">
-</div>
+      </select>
+    </div>
 
-<!-- Father Name -->
-<div class="form-group">
-<label>Father / Husband Name</label>
-<input type="text">
-</div>
+    <!-- PTIN -->
+    <div class="form-group ptin-group">
+      <label class="checkbox">
+        <span>PTIN (Click For Manual)</span>
+      </label>
+      <input type="text" formControlName="ptin" placeholder="Enter PTIN">
+    </div>
 
-<!-- Mobile -->
-<div class="form-group">
-<label>Owner Mobile No</label>
-<input type="text">
-</div>
+    <!-- Ownership -->
+    <div class="form-group">
+      <label>Property Ownership</label>
+      <select  formControlName="ownership" >
 
-<!-- Gender -->
-<div class="form-group">
-<label>Gender</label>
-<select>
-<option>Male</option>
-<option>Female</option>
-</select>
-</div>
+        <option value="">Select Ownership</option>
 
-<!-- House No -->
-<div class="form-group">
-<label>House No</label>
-<input type="text">
-</div>
+        @for(owner of ownerships; track owner){
+        <option>
+          {{owner}}
+        </option>
+        }
 
-<!-- Old House -->
-<div class="form-group">
-<label>Old House No</label>
-<input type="text">
-</div>
+      </select>
+    </div>
 
-<!-- Sequence -->
-<div class="form-group">
-<label>Property Sequence No</label>
-<input type="text">
-</div>
+    <!-- Owner Name -->
+    <div class="form-group">
+      <label>Owner Name</label>
+      <input type="text" formControlName="ownerName" placeholder="Enter Owner Name">
+    </div>
 
-</div>
+    <!-- Father Name -->
+    <div class="form-group">
+      <label>Father / Husband Name</label>
+      <input type="text" formControlName="fatherName" placeholder="Enter Father / Husband Name">
+    </div>
+
+    <!-- Mobile -->
+    <div class="form-group">
+      <label>Owner Mobile No</label>
+      <input type="text" formControlName="mobileNo" placeholder="Enter Owner Mobile No">
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+      <label>Gender</label>
+      <select formControlName="gender">
+
+        @for(gender of genders; track gender.id){
+        <option [value]="gender.id">
+          {{gender.name}}
+        </option>
+        }
+
+      </select>
+    </div>
+
+    <!-- House No -->
+    <div class="form-group">
+      <label>House No</label>
+      <input type="text" formControlName="houseNo" placeholder="Enter House No">
+    </div>
+
+    <!-- Old House -->
+    <div class="form-group">
+      <label>Old House No</label>
+      <input type="text" formControlName="oldHouseNo" placeholder="Enter Old House No">
+    </div>
+
+    <!-- Sequence -->
+    <div class="form-group">
+      <label>Property Sequence No</label>
+      <input type="text" formControlName="propertySequenceNo" placeholder="Enter Property Sequence No">
+    </div>
+
+  </div>
 
 </div>
