@@ -1,10 +1,10 @@
 .modal-overlay{
-  position: fixed;
+  position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
-  background: rgba(0,0,0,0.5);
+  background:rgba(0,0,0,0.5);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -22,38 +22,176 @@
   margin-top:10px;
 }
 
-/* mobile */
+.top-bar{
+  display:flex;
+  align-items:center;
+  padding:10px;
+}
+
+.right-section{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;
+  position:relative;
+}
+
+.search-input{
+  width:200px;
+  padding:8px 12px;
+  border-radius:6px;
+  border:1px solid #ddd;
+}
+
+.icon{
+  width:20px;
+  height:20px;
+  cursor:pointer;
+}
+
+.column-dropdown{
+  position:absolute;
+  top:40px;
+  right:0;
+  width:200px;
+  background:white;
+  border:1px solid #ddd;
+  border-radius:6px;
+  padding:10px;
+  max-height:200px;
+  overflow:auto;
+  scrollbar-width:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  z-index:1000;
+}
+
+.column-dropdown::-webkit-scrollbar{
+  display:none;
+}
+
+.column-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px;
+  cursor:pointer;
+}
+
+.column-item:hover{
+  background:#f5f5f5;
+}
+
 @media (max-width:768px){
   .modal-box{
     width:90%;
   }
-}   
-/* Mobile friendly pagination tweaks */
-.ag-theme-alpine {
-  font-size: 14px; /* thoda chhota font mobile ke liye */
-
-  .ag-paging-panel {
-    display: flex;
-    flex-wrap: wrap; /* Buttons wrap ho jayenge small screen pe */
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .ag-paging-button, 
-  .ag-page-size-panel, 
-  .ag-paging-description {
-    min-width: auto;
-    white-space: nowrap;
-  }
-
-  /* Pagination buttons ko chhota karo mobile me */
-  .ag-paging-button {
-    padding: 4px 6px;
-    font-size: 13px;
-  }
+}
+.action-dropdown{
+  position:absolute;
+  top:40px;
+  right:0;
+  width:150px;
+  background:white;
+  border:1px solid #ddd;
+  border-radius:6px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  z-index:1000;
+}
+.filter-popup{
+  position:absolute;
+  top:40px;
+  right:80px;
+  background:white;
+  border:1px solid #ddd;
+  border-radius:6px;
+  padding:10px;
+  width:200px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  z-index:1000;
 }
 
-/* Optional: horizontal scroll bar styling */
-.ag-theme-alpine .ag-root-wrapper {
-  overflow-x: auto;
+.filter-popup select{
+  padding:6px;
+  border-radius:4px;
+  border:1px solid #ddd;
+}
+.menu-item{
+  padding:10px;
+  cursor:pointer;
+}
+
+.menu-item:hover{
+  background:#f5f5f5;
+}
+
+.delete{
+  color:red;
+}
+.menu-item{
+  display:flex;
+
+  gap:10px;
+
+  cursor:pointer;
+}
+
+.menu-item:hover{
+  background:#f5f5f5;
+}
+
+.menu-icon{
+  width:16px;
+  height:16px;
+}
+
+.delete{
+  color:red;
+}
+.zone-select
+{
+      width: 196px;
+    margin-left: 54px;
+}
+@media (max-width:768px){
+
+  .top-bar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .right-section{
+    width:100%;
+    margin-left:0;
+    flex-wrap:wrap;
+  }
+
+  .search-input{
+    width:100%;
+  }
+
+  .zone-select{
+    width:100%;
+    margin-left:0;
+  }
+
+  .filter-popup{
+    right:0;
+    width:100%;
+    top:45px;
+  }
+
+  .column-dropdown{
+    right:0;
+    width:100%;
+  }
+
+  .action-dropdown{
+    right:0;
+    width:100%;
+  }
+
 }
