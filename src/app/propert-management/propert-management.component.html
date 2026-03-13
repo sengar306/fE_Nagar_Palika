@@ -1,102 +1,102 @@
 <div class="top-bar">
 
-<h2>Property List</h2>
-  <!-- <select  class="zone-select">
-    <option  class="zone-select"value="">Select Zone</option>
-    <option *ngFor="let z of zones" [value]="z.name">
-      {{z.name}}
-    </option>
-  </select> -->
-<div class="right-section"
-     appClickOutside
-     (clickOutside)="closeMenus()">
+  <h2>Property List</h2>
 
-  <!-- Zone Filter -->
+  <div class="right-section"
+       appClickOutside
+       (clickOutside)="closeMenus()">
 
+    <!-- Search Filter -->
+    <input
+      type="text"
+      placeholder="Search..."
+      class="search-input"
+      [(ngModel)]="searchText"
+      (keyup)="searchProperty()">
 
-  <!-- Search Filter -->
-  <input
-    type="text"
-    placeholder="Search..."
-    class="search-input"
-   >
-  <i-feather
-    name="filter"
-    class="icon"
-    (click)="toggleFilterPopup()">
-  </i-feather>
-  <div class="filter-popup" *ngIf="showFilterPopup">
+    <i-feather
+      name="filter"
+      class="icon"
+      (click)="toggleFilterPopup()">
+    </i-feather>
 
-    <select (change)="filterZone($event)">
-   
-      <option *ngFor="let z of zones" [value]="z.id">
-        {{z.name}}
-      </option>
-    </select>
+    <!-- FILTER POPUP -->
+    <div class="filter-popup" *ngIf="showFilterPopup">
 
-    <select (change)="filterWard($event)">
-      <option value="">Ward</option>
-      <option *ngFor="let w of wards" [value]="w.id">
-        {{w.name}}
-      </option>
-    </select>
+      <!-- Zone -->
+      <select (change)="filterZone($event)">
+        <option value="">Zone</option>
+        <option *ngFor="let z of zones" [value]="z.id">
+          {{z.name}}
+        </option>
+      </select>
 
-    <select >
-      <option value="">Locality</option>
-      <option *ngFor="let l of localities" [value]="l">
-        {{l.name}}
-      </option>
-    </select>
+      <!-- Ward -->
+      <select (change)="filterWard($event)">
+        <option value="">Ward</option>
+        <option *ngFor="let w of wards" [value]="w.id">
+          {{w.name}}
+        </option>
+      </select>
 
-  </div>
-  <!-- Eye icon -->
-  <i-feather
-    name="eye"
-    class="icon"
-    (click)="toggleColumnMenu()">
-  </i-feather>
+      <!-- Locality -->
+      <select (change)="filterLocality($event)">
+        <option value="">Locality</option>
+        <option *ngFor="let l of localities" [value]="l.id">
+          {{l.name}}
+        </option>
+      </select>
 
-  <!-- Three dots -->
-  <span class="icon dots" (click)="toggleActionMenu()">⋯</span>
+    </div>
 
-  <!-- Column Dropdown -->
-  <div class="column-dropdown" *ngIf="showColumnDropdown">
+    <!-- Column Icon -->
+    <i-feather
+      name="eye"
+      class="icon"
+      (click)="toggleColumnMenu()">
+    </i-feather>
 
-    <div *ngFor="let col of colDefs" class="column-item">
+    <!-- Three dots -->
+    <span class="icon dots" (click)="toggleActionMenu()">⋯</span>
 
-      <i-feather
-        [name]="isColumnVisible(col) ? 'eye' : 'eye-off'"
-        class="icon"
-        (click)="toggleColumn(col)">
-      </i-feather>
+    <!-- Column Dropdown -->
+    <div class="column-dropdown" *ngIf="showColumnDropdown">
 
-      <span>{{col.headerName}}</span>
+      <div *ngFor="let col of colDefs" class="column-item">
+
+        <i-feather
+          [name]="isColumnVisible(col) ? 'eye' : 'eye-off'"
+          class="icon"
+          (click)="toggleColumn(col)">
+        </i-feather>
+
+        <span>{{col.headerName}}</span>
+
+      </div>
+
+    </div>
+
+    <!-- Action Dropdown -->
+    <div class="action-dropdown" *ngIf="showActionMenu">
+
+      <div class="menu-item" (click)="openModal()">
+        <i-feather name="plus" class="menu-icon"></i-feather>
+        <span>Create</span>
+      </div>
+
+      <div class="menu-item">
+        <i-feather name="edit" class="menu-icon"></i-feather>
+        <span>Update</span>
+      </div>
+
+      <div class="menu-item delete">
+        <i-feather name="trash-2" class="menu-icon"></i-feather>
+        <span>Delete</span>
+      </div>
 
     </div>
 
   </div>
-
-  <!-- Action Dropdown -->
-  <div class="action-dropdown" *ngIf="showActionMenu">
-
-    <div class="menu-item" (click)="openModal()">
-      <i-feather name="plus" class="menu-icon"></i-feather>
-      <span>Create</span>
-    </div>
-
-    <div class="menu-item">
-      <i-feather name="edit" class="menu-icon"></i-feather>
-      <span>Update</span>
-    </div>
-
-    <div class="menu-item delete">
-      <i-feather name="trash-2" class="menu-icon"></i-feather>
-      <span>Delete</span>
-    </div>
-
-  </div>
-
-</div>
 
 </div>
 
@@ -116,8 +116,8 @@
     [rowData]="rowData"
     (gridReady)="onGridReady($event)"
     [columnDefs]="colDefs"
+    (rowClicked)="onRowClicked($event)"
     pagination="true"
     [gridOptions]="{ theme: 'legacy' }">
   </ag-grid-angular>
 </div>
-

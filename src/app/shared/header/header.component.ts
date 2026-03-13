@@ -9,8 +9,10 @@ import { AuthService } from 'src/app/auth/service/auth-service';
 })
 export class HeaderComponent  implements OnInit {
 @Output() menuToggle = new EventEmitter<void>();
+  isSidebarOpen: boolean=true
 
   toggleSidebar() {
+     this.isSidebarOpen = !this.isSidebarOpen;
     this.menuToggle.emit();
   }
   constructor(private auth:AuthService) { }

@@ -8,18 +8,29 @@
 
     <div class="modal-body">
 
-      @if(step === 1){
-     <app-basic-property-details [propertyForm]="propertyForm"></app-basic-property-details>
-      }
+<!-- Step 1: Hamesha dikhega -->
+@if(step === 1){  
+  <app-basic-property-details [propertyForm]="propertyForm"></app-basic-property-details>
+}
 
-      @if(step === 2){
+<!-- Step 2: Hamesha dikhega -->
+@if(step === 2){
   <app-additional-parameters [propertyForm]="propertyForm"></app-additional-parameters>
-      }
+}
 
-      @if(step === 3){
-        <app-annual-calculation [propertyForm]="propertyForm"></app-annual-calculation>
-      }
+<!-- Step 3: Yahan condition badlegi -->
+@if(step === 3){
+  @if(propertyForm.get('propertyType')?.value === 'Assessment') {
+    <app-property-floor-details [propertyForm]="propertyForm"></app-property-floor-details>
+  } @else {
+    <app-annual-calculation [propertyForm]="propertyForm"></app-annual-calculation>
+  }
+}
 
+
+@if(step === 4 && propertyForm.get('propertyType')?.value === 'Assessment'){
+  <app-annual-calculation [propertyForm]="propertyForm"></app-annual-calculation>
+}
     </div>
 <div class="modal-footer">
 
@@ -40,18 +51,17 @@
       Clear
     </button>
 
-    @if(step < 3){
-    <button class="btn btn-primary"
-            (click)="nextStep()">
-      Next
-    </button>
-    }
+@if(step < totalSteps) {
+  <button class="btn btn-primary" (click)="nextStep()">
+    Next
+  </button>
+}
 
-    @if(step === 3){
-    <button class="btn btn-primary" (click)="submit()">
-      Submit
-    </button>
-    }
+@if(step === totalSteps) {
+  <button class="btn btn-primary" (click)="submit()">
+    Submit
+  </button>
+}
 
   </div>
 

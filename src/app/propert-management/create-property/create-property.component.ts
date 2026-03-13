@@ -20,11 +20,10 @@ import { PropertyManagemnetService } from '../property-managemnet-service';
       
     this.setHeading()
 this.propertyForm = this.fb.group({
-
+propertyType:[null],
   zone: [null],
   ward: [null],
   locality: [null],
-
   ptin: [''],
   ownership: [''],
   ownerName: [''],
@@ -42,21 +41,17 @@ this.propertyForm = this.fb.group({
   arvResidential: [0],
   arvCommercial: [0],
   arvEffectiveFrom: [null],
-
+floors:this.fb.array([]),
   houseTax: [false],
   waterTax: [false],
   sewerTax: [false],
-
   deactivateOldProperty: [false],
-
   arrearHouseTax: [0],
   arrearWaterTax: [0],
   arrearSewerTax: [0],
-
   surchargeHouseTax: [0],
   surchargeWaterTax: [0],
   surchargeSewerTax: [0],
-
   proposedArv: [0]
 
 });
@@ -69,7 +64,7 @@ this.propertyForm = this.fb.group({
     step = 1;
 
     nextStep(){
-      if(this.step < 4){
+      if(this.step <= 4){
         console.log(this.propertyForm.value)
         this.step++;
         this.setHeading()
@@ -112,4 +107,9 @@ this.propertyForm = this.fb.group({
     }
   })
     }
+    get totalSteps(): number {
+  const pType = this.propertyForm.get('propertyType')?.value;
+  // Agar Assessment hai to 4 steps, varna 3 steps
+  return pType === 'Assessment' ? 4 : 3;
+}
     }

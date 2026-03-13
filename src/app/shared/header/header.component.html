@@ -1,13 +1,18 @@
 <header class="header">
-  <button class="menu-btn" (click)="toggleSidebar()">☰</button>
 
-  <!-- <input type="text" placeholder="Try to searching..." /> -->
+  <button 
+    class="menu-btn"
+    (click)="toggleSidebar()">
+    ☰
+  </button>
 
   <div class="profile">
-        <button class="theme-btn" (click)="toggleTheme()">
+    <button class="theme-btn" (click)="toggleTheme()">
       {{isDark ? '☀️' : '🌙'}}
     </button>
-    <img src="https://i.pravatar.cc/150?img=3" class="profile-img" alt="profile">
+
+    <img src="https://i.pravatar.cc/150?img=3" class="profile-img">
     <span>{{tokenData.name}}</span>
   </div>
+
 </header>

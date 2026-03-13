@@ -3,20 +3,7 @@
   <div class="form-grid">
 
     <!-- Property Type -->
-    <div class="form-group">
-      <label>Property Type</label>
-      <select formControlName="propertyTypeId">
-
-        <option [ngValue]="null">Select Property Type</option>
-
-        @for(type of propertyTypes; track type){
-        <option [ngValue]="type">
-          {{type}}
-        </option>
-        }
-
-      </select>
-    </div>
+    
 
     <!-- Property Category -->
     <div class="form-group">
@@ -34,7 +21,20 @@
 
       </select>
     </div>
+<div class="form-group">
+      <label>Property Type</label>
+      <select formControlName="propertyTypeId">
 
+        <option [ngValue]="null">Select Property Type</option>
+
+        @for(type of propertyTypes; track type){
+        <option [ngValue]="type">
+          {{type}}
+        </option>
+        }
+
+      </select>
+    </div>
     <!-- ARV Residential -->
     <div class="form-group">
       <label>ARV Residential</label>

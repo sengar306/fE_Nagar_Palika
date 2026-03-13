@@ -1,23 +1,90 @@
-<table class="floor-table">
+<div class="minimal-accordion-container" [formGroup]="propertyForm">
+  
+  <!-- <div class="accordion-title-main">
+    Property Floor Wise Area Details
+  </div> -->
 
-<thead>
-<tr>
-<th>Floor</th>
-<th>Category</th>
-<th>Construction Type</th>
-<th>Built-up Area</th>
-<th>Empty Area</th>
-</tr>
-</thead>
+  <div formArrayName="floors" class="accordion-list">
+    @for(floor of floors.controls; track floor; let i = $index) {
+      <div class="accordion-item" [class.active]="activeAccordionIndex === i">
+        
+        <!-- Header: Image ke style mein (Arrow Left Side) -->
+        <div class="accordion-header" (click)="toggleAccordion(i)">
+          <span class="chevron" [class.rotated]="activeAccordionIndex === i">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="header-text">Floor {{ i + 1 }} Details</span>
+        </div>
 
-<tbody>
-<tr>
-<td><input type="text"></td>
-<td><input type="text"></td>
-<td><input type="text"></td>
-<td><input type="number"></td>
-<td><input type="number"></td>
-</tr>
-</tbody>
+        <!-- Body: Form Fields -->
+        @if(activeAccordionIndex === i) {
+          <div class="accordion-content" [formGroupName]="i">
+            <div class="floor-form-grid">
+      <div class="form-field">
+  <label>Category</label>
+  <!-- [attr.disabled] use karenge taki agar Mixed na ho to dropdown lock ho jaye -->
+  <select formControlName="category" 
+          [attr.disabled]="propertyForm.get('propertyType')?.value !== 'Mixed' ? true : null">
+    <option [ngValue]="null">Select Category</option>
+    <option value="Residential">Residential</option>
+    <option value="Commercial">Commercial</option>
+  </select>
+  
+  @if(propertyForm.get('propertyType')?.value !== 'Mixed') {
+    <small style="color: #666;">Fixed based on Property Type</small>
+  }
+</div>
 
-</table>
+              <div class="form-field">
+                <label>Construction Type</label>
+                <select formControlName="constructionType">
+                  <option [ngValue]="null">Select Construction</option>
+                 @for(item of constructionTypes; track item) {
+  <option [value]="item">
+    {{item}}
+  </option>
+}
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label>MRR</label>
+                <input type="text" formControlName="mrr" placeholder="Enter MRR">
+              </div>
+
+              <div class="form-field">
+                <label>Carpet / Covered Area</label>
+                <input type="number" formControlName="builtUpArea">
+              </div>
+
+              <div class="form-field">
+                <label>Empty Area</label>
+                <input type="number" formControlName="emptyArea">
+              </div>
+
+              <div class="form-field">
+                <label>ARV</label>
+                <div class="arv-display">0.00</div>
+              </div>
+
+            </div>
+
+            <div class="action-row">
+              <button type="button" class="btn-delete" (click)="removeFloor(i)">
+                 Delete Floor {{i + 1}}
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="accordion-footer">
+    <button type="button" class="btn-add-new" (click)="addFloor()">
+      + Add New Floor
+    </button>
+  </div>
+</div>
