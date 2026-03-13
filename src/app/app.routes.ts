@@ -4,6 +4,7 @@ import { HomePage } from './home/home.page';
 import { authGuard } from './auth/guards/auth-guard';
 import { PropertManagementComponent } from './propert-management/propert-management.component';
 import { DashBoardComponent } from './dash-board/dash-board.component';
+import { PropertyDetailsComponent } from './propert-management/property-details/property-details.component';
 
 export const routes: Routes = [
  {
@@ -16,7 +17,11 @@ export const routes: Routes = [
      canActivate: [authGuard]   ,
        children: [
       { path: 'property', component: PropertManagementComponent },
-      {path:'dashboard',component:DashBoardComponent}
+      {path:'dashboard',component:DashBoardComponent},
+ { 
+    path: 'property/:id', 
+    component: PropertyDetailsComponent // Aapka component jahan data dikhana hai
+  }
 
     ]
 

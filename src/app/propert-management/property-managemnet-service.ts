@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -7,7 +8,6 @@ import { environment } from 'src/environments/environment';
 })
 export class PropertyManagemnetService {
     
-
 
   baseUrl:any=environment.baseUrl
   constructor(private http:HttpClient){
@@ -32,8 +32,16 @@ export class PropertyManagemnetService {
    return this.http.post(url,body,{observe:'response'})
 
   }
-  getAllProperty(){
-    let url=`${this.baseUrl}/api/property/get_all_property`
-      return this.http.get(url,{observe:'response'})
-  }
+getAllProperty(params:any){
+      let url = `${this.baseUrl}/api/property/get_all_property`
+  return this.http.get(url, {
+    params: params,
+    observe: 'response'
+  });
+}
+getPropetyById(id:any){
+let url=`${this.baseUrl}/api/property/byid?id=${id}`
+  return this.http.get(url,{observe:'response'})
+
+}
 }

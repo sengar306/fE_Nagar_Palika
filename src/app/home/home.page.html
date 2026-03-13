@@ -1,6 +1,6 @@
 <div class="layout">
 
-  <app-side-bar [isOpen]="isSidebarOpen"></app-side-bar>
+  <app-side-bar (close)="toggleSidebar()" [isOpen]="isSidebarOpen"></app-side-bar>
 
   <div class="main">
     <app-header (menuToggle)="toggleSidebar()"></app-header>

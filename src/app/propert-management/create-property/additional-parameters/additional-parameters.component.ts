@@ -12,14 +12,29 @@ export class AdditionalParametersComponent  implements OnInit {
   constructor() { }
 
   ngOnInit() {}
-propertyTypes = [
- 'Residential',
-'Commercial',
- 'Industrial'
+
+propertyTypes: string[] = [
+  'अन्य',
+  'अन्य प्रतिष्ठान',
+  'अर्धसरकारी कार्यालय',
+  'आवास और क्लिनिक',
+  'आवास और दुकान',
+  'आवास और मेडिकल स्टोर',
+  'इमारत',
+  'एटीएम',
+  'ऑफिस',
+  'औद्योगिक इकाइयां',
+  'क्रीड़ा केंद्र',
+  'क्लब',
+  'कल्याण मंडप',
+  'क्लिनिक',
+  'कारखाना',
+  'कोचिंग'
 ];
 
 propertyCategories = [
   'Residential',
-  'Commercial' 
+  'Commercial' ,
+  'Mixed'
 ];
 }
