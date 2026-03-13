@@ -1,5 +1,6 @@
 {
-  "name": "ionic-app-base",
-  "integrations": {},
-  "type": "angular-standalone"
+  "appId": "com.vivek.ionicapp",
+  "appName": "ionic-app-base",
+  "webDir": "www",
+  "bundledWebRuntime": false
 }
