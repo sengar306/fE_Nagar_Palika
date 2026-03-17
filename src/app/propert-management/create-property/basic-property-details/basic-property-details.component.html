@@ -2,58 +2,54 @@
 
   <div class="form-grid">
 
+    <!-- Zone -->
+    <div class="form-group">
+      <label>Zone</label>
+      <select formControlName="zone">
+        <option [ngValue]="null">Select Zone</option>
 
-<div class="form-group">
-  <label>Property Type</label>
-<!-- Property Type Selection -->
-  <select formControlName="propertyType">
-    <option [ngValue]="null">Select Property Type</option>
-    <option value="Assessment">Assessment</option>
-    <option value="Manual">Manual</option>
-  </select>
-
-</div>
-
-   <div class="form-group">
-  <label>Zone</label>
-
-<select formControlName="zone">
-
-<option [ngValue]="null">Select Zone</option>
-
-@for(zone of zones; track zone.id){
-<option [ngValue]="zone">
-{{zone.name}}
-</option>
-}
-
-</select>
-</div>
+        @for(zone of zones; track zone.id){
+        <option [ngValue]="zone">
+          {{zone.name}}
+        </option>
+        }
+      </select>
+    </div>
 
     <!-- Ward -->
     <div class="form-group">
       <label>Ward</label>
- <select formControlName="ward">
+      <select formControlName="ward">
 
-<option >Select Ward</option>
+        <option [ngValue]="null">Select Ward</option>
 
-@for(ward of wards; track ward.id){
-<option   [ngValue]="ward" >
-{{ward.name}}
-</option>
-}
+        @for(ward of wards; track ward.id){
+        <option [ngValue]="ward">
+          {{ward.name}}
+        </option>
+        }
 
-</select>
+      </select>
+    </div>
+
+    <!-- Ward Name -->
+    <div class="form-group">
+      <label>Ward Name</label>
+      <input 
+        type="text" 
+        formControlName="wardName"
+        placeholder="Enter Ward Name">
     </div>
 
     <!-- Locality -->
     <div class="form-group">
-      <label>Locality</label>
+      <label>Locality Name</label>
       <select formControlName="locality">
-        <option  >Select Locality</option>
+
+        <option [ngValue]="null">Select Locality</option>
 
         @for(locality of localities; track locality.id){
-        <option [ngValue]="locality" >
+        <option [ngValue]="locality">
           {{locality.name}}
         </option>
         }
@@ -61,78 +57,97 @@
       </select>
     </div>
 
-    <!-- PTIN -->
-    <div class="form-group ptin-group">
-      <label class="checkbox">
-        <span>PTIN (Click For Manual)</span>
-      </label>
-      <input type="text" formControlName="ptin" placeholder="Enter PTIN">
-    </div>
-
-    <!-- Ownership -->
-    <div class="form-group">
-      <label>Property Ownership</label>
-      <select  formControlName="ownership" >
-
-        <option value="">Select Ownership</option>
-
-        @for(owner of ownerships; track owner){
-        <option>
-          {{owner}}
-        </option>
-        }
-
-      </select>
-    </div>
-
-    <!-- Owner Name -->
+    <!-- Owner -->
     <div class="form-group">
       <label>Owner Name</label>
-      <input type="text" formControlName="ownerName" placeholder="Enter Owner Name">
+      <input 
+        type="text" 
+        formControlName="ownerName"
+        placeholder="Enter Owner Name">
     </div>
 
-    <!-- Father Name -->
+    <!-- Father/Husband -->
     <div class="form-group">
       <label>Father / Husband Name</label>
-      <input type="text" formControlName="fatherName" placeholder="Enter Father / Husband Name">
-    </div>
-
-    <!-- Mobile -->
-    <div class="form-group">
-      <label>Owner Mobile No</label>
-      <input type="text" formControlName="mobileNo" placeholder="Enter Owner Mobile No">
-    </div>
-
-    <!-- Gender -->
-    <div class="form-group">
-      <label>Gender</label>
-      <select formControlName="gender">
-
-        @for(gender of genders; track gender.id){
-        <option [value]="gender.id">
-          {{gender.name}}
-        </option>
-        }
-
-      </select>
-    </div>
-
-    <!-- House No -->
-    <div class="form-group">
-      <label>House No</label>
-      <input type="text" formControlName="houseNo" placeholder="Enter House No">
+      <input 
+        type="text" 
+        formControlName="fatherName"
+        placeholder="Enter Father / Husband Name">
     </div>
 
     <!-- Old House -->
     <div class="form-group">
       <label>Old House No</label>
-      <input type="text" formControlName="oldHouseNo" placeholder="Enter Old House No">
+      <input 
+        type="text" 
+        formControlName="oldHouseNo"
+        placeholder="Enter Old House No">
     </div>
 
-    <!-- Sequence -->
+    <!-- New Sequence -->
     <div class="form-group">
-      <label>Property Sequence No</label>
-      <input type="text" formControlName="propertySequenceNo" placeholder="Enter Property Sequence No">
+      <label>New Sequence No</label>
+      <input 
+        type="text" 
+        formControlName="sequenceNo"
+        placeholder="Enter New Sequence No">
+    </div>
+
+    <!-- Road Width -->
+    <div class="form-group">
+      <label>Road Width</label>
+      <input 
+        type="text" 
+        formControlName="roadWidth"
+        placeholder="Enter Road Width (in ft)">
+    </div>
+
+    <!-- Mobile -->
+    <div class="form-group">
+      <label>Mobile No</label>
+      <input 
+        type="text" 
+        formControlName="mobileNo"
+        placeholder="Enter Mobile Number">
+    </div>
+
+    <!-- Street Name -->
+    <div class="form-group">
+      <label>Street Name</label>
+      <input 
+        type="text" 
+        formControlName="streetName"
+        placeholder="Enter Street Name">
+    </div>
+
+    <!-- Street No -->
+    <div class="form-group">
+      <label>Street No</label>
+      <input 
+        type="text" 
+        formControlName="streetNo"
+        placeholder="Enter Street No">
+    </div>
+   <div class="form-group">
+  <label>Built Type</label>
+
+  <select formControlName="builtType">
+    <option value="">Select Built Type</option>
+
+    <option value="kaccha">कच्चा</option>
+    <option value="pakka">पक्का</option>
+    <option value="ardh_pakka">अर्धपक्का</option>
+
+  </select>
+</div>
+
+    <!-- Total Plot Area -->
+    <div class="form-group">
+      <label>Total Plot Area</label>
+      <input 
+        type="text" 
+        formControlName="plotArea"
+        placeholder="Enter Total Plot Area (sq ft)">
     </div>
 
   </div>

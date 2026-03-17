@@ -1,16 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-additional-parameters',
   templateUrl: './additional-parameters.component.html',
   styleUrls: ['./additional-parameters.component.scss'],
-  imports:[ReactiveFormsModule]
+  imports:[ReactiveFormsModule,CommonModule]
 })
 export class AdditionalParametersComponent  implements OnInit {
 @Input() propertyForm!:FormGroup
-  constructor() { }
 
+constructor(private fb: FormBuilder) {}
   ngOnInit() {}
 
 propertyTypes: string[] = [
@@ -36,5 +37,19 @@ propertyCategories = [
   'Residential',
   'Commercial' ,
   'Mixed'
-];
+]
+
+
+get floors(): FormArray {
+  const floors = this.propertyForm.get('floors');
+  return floors ? (floors as FormArray) : this.fb.array([]);
+}
+
+toggleAccordion(index: number) {
+  this.floors.controls.forEach((floor: any, i: number) => {
+    const current = floor.get('expanded')?.value;
+
+    floor.get('expanded')?.setValue(i === index ? !current : false);
+  });
+}
 }

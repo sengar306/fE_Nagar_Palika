@@ -1,4 +1,7 @@
 {
+  "name": "fb_nagar_palika",
+  "integrations": {},
+  "type": "angular",
   "appId": "com.vivek.ionicapp",
   "appName": "ionic-app-base",
   "webDir": "www",
