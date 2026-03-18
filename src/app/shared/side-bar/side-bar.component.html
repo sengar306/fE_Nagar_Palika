@@ -1,11 +1,27 @@
-<aside class="sidebar" [class.mobile-open]="isOpen">
-  <h2 class="logo">Spike Admin</h2>
+<aside class="sidebar-shell" [class.mobile-open]="isOpen">
+  <div class="brand-block">
+    <div class="brand-mark">NP</div>
+    <div>
+      <p>Nagar Palika</p>
+      <strong>Admin Console</strong>
+    </div>
+  </div>
 
-<ul>
-  <li (click)="onClick('/home/dashboard')">Dashboard</li>
-  <li (click)="onClick('/home/property')">Property</li>
-  <li routerLink="/home/ecommerce">Billing</li>
-  <li routerLink="/home/blog">Blog</li>
-  <li routerLink="/home/profile">User Profile</li>
-</ul>
+  <nav class="menu-list">
+    @for (item of menuItems; track item.route) {
+      <button
+        type="button"
+        class="menu-item"
+        [class.active]="isActive(item.route)"
+        (click)="onClick(item.route)">
+        <strong>{{ item.label }}</strong>
+        <span>{{ item.hint }}</span>
+      </button>
+    }
+  </nav>
+
+  <div class="sidebar-footer">
+    <p>Responsive municipal workflow</p>
+    <span>Designed for desktop and in-app mobile view.</span>
+  </div>
 </aside>

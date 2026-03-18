@@ -1,116 +1,148 @@
 <div class="form-wrapper" [formGroup]="propertyForm">
-
-  <!-- Is Plot Empty -->
-  <div class="form-group">
-    <label class="label">
-      <input type="checkbox" formControlName="isPlotEmpty">
-      Is Plot Empty
-    </label>
-  </div>
-
-  <!-- House Age -->
-  <div class="form-group">
-    <label class="label">House Age</label>
-    <select formControlName="houseAge">
-      <option value="">Select House Age</option>
-      <option value="1-10">1-10 Years</option>
-      <option value="10-20">10-20 Years</option>
-      <option value="20+">20+ Years</option>
-    </select>
-  </div>
-
-  <!-- Floors -->
-  <div *ngIf="!propertyForm.get('isPlotEmpty')?.value">
-
-    <!-- No of Floors -->
-    <div class="form-group">
-      <label class="label">No of Floors</label>
-      <input type="number" formControlName="noOfFloors">
+  
+  <div class="top-grid">
+    <div class="form-group toggle-card">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="isPlotEmpty">
+        <span>Is Plot Empty</span>
+      </label>
+      <small>Empty plot hone par floor details hide ho jayengi.</small>
     </div>
 
-    <!-- Floors -->
-    <div formArrayName="floors">
+    <div class="form-group">
+      <label class="label">House Age</label>
+      <select formControlName="houseAge">
+        <option value="">Select House Age</option>
+        <option value="1-10">1-10 Years</option>
+        <option value="10-20">10-20 Years</option>
+        <option value="20+">20+ Years</option>
+      </select>
+    </div>
 
-      <div *ngFor="let floor of floors.controls; let i = index"
-           [formGroupName]="i"
-           class="accordion">
+    <div class="form-group" *ngIf="!propertyForm.get('isPlotEmpty')?.value">
+      <label class="label">No of Floors</label>
+      <input type="number" min="0" formControlName="noOfFloors" placeholder="Enter number of floors">
+    </div>
+  </div>
 
-        <!-- HEADER -->
-        <div class="accordion-header" (click)="toggleAccordion(i)">
+  <div class="floor-section" *ngIf="!propertyForm.get('isPlotEmpty')?.value">
+    <div class="floor-header">
+      <h4>Floor Details</h4>
+      <span>{{ floors.length }} floor entries</span>
+    </div>
+
+    <div formArrayName="floors" class="floor-list">
+      <div
+        *ngFor="let floor of floors.controls; let i = index"
+        [formGroupName]="i"
+        class="accordion">
+        <button type="button" class="accordion-header" (click)="toggleAccordion(i)">
           <div class="left">
-            <span class="icon">🏢</span>
-            <span>Floor {{i + 1}}</span>
+            <span class="floor-badge">{{ i + 1 }}</span>
+            <span>Floor {{ i + 1 }}</span>
           </div>
 
           <div class="right">
-            <span class="arrow">
-              {{ floor.get('expanded')?.value ? '▲' : '▼' }}
+            <span class="status-chip">
+              {{ floor.get('propertyType')?.value || 'Details pending' }}
             </span>
+            <span class="arrow">{{ floor.get('expanded')?.value ? '▲' : '▼' }}</span>
           </div>
-        </div>
+        </button>
 
-        <!-- BODY -->
         <div *ngIf="floor.get('expanded')?.value" class="accordion-body">
-          <!-- Property Type -->
-               <div class="form-group">
-            <label class="label">Total Area</label>
-            <input formControlName="totalArea" placeholder="Enter total area">
-          </div>
-          <div class="form-group">
-            <label class="label">Property Type</label>
-            <select formControlName="propertyType">
-              <option value="">Select</option>
-              <option value="Residential">Residential</option>
-              <option value="Commercial">Commercial</option>
-            </select>
-          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="label">Total Area</label>
+              <input formControlName="totalArea" placeholder="Enter total area">
+            </div>
 
-          <!-- Property Used As -->
-       <div class="form-group">
-  <label>Property Used As</label>
+            <div class="form-group">
+              <label class="label">Property Type</label>
+              <select formControlName="propertyType">
+                <option value="">Select</option>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+              </select>
+            </div>
 
-  <select formControlName="usageType" class="custom-select">
-    <option value="">Select</option>
+            <div class="form-group">
+              <label class="label">Property Used As</label>
+              <select formControlName="usageType" class="custom-select">
+                <option value="">Select</option>
 
-    @for (item of propertyTypes; track item) {
-      <option [value]="item">{{ item }}</option>
-    }
+                @for (item of propertyTypes; track item) {
+                  <option [value]="item">{{ item }}</option>
+                }
+              </select>
+            </div>
 
-  </select>
-</div>
-          <!-- Occupancy -->
-          <div class="form-group">
-            <label class="label">Occupancy</label>
-            <input formControlName="occupancy" placeholder="Owner / Tenant">
-          </div>
+            <div class="form-group">
+              <label class="label">Occupancy</label>
+              <input formControlName="occupancy" placeholder="Owner / Tenant">
+            </div>
 
-          <!-- Is Rented -->
-          <div class="form-group">
-            <label class="label">Is Rented?</label>
+            <div class="form-group full-width">
+              <label class="label">Is Rented?</label>
 
-            <div class="radio">
-              <label>
-                <input type="radio" value="yes" formControlName="isRented"> Yes
-              </label>
+              <div class="radio">
+                <label class="radio-option">
+                  <input type="radio" value="yes" formControlName="isRented">
+                  <span>Yes</span>
+                </label>
 
-              <label>
-                <input type="radio" value="no" formControlName="isRented"> No
-              </label>
+                <label class="radio-option">
+                  <input type="radio" value="no" formControlName="isRented">
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group" *ngIf="floor.get('isRented')?.value === 'yes'">
+              <label class="label">Rented Area</label>
+              <input formControlName="rentedArea" placeholder="Enter rented area">
             </div>
           </div>
-
-          <!-- Rented Area -->
-          <div class="form-group" *ngIf="floor.get('isRented')?.value === 'yes'">
-            <label class="label">Rented Area</label>
-            <input formControlName="rentedArea" placeholder="Enter rented area">
-          </div>
-
         </div>
-
       </div>
-
     </div>
 
-  </div>
+    <div class="totals-grid">
+      <div class="form-group total-card">
+        <label class="label">Total Residential Area</label>
+        <input formControlName="totalResidentialArea" placeholder="Auto-calculated" readonly>
+      </div>
 
+      <div class="form-group total-card">
+        <label class="label">Total Commercial Area</label>
+        <input formControlName="totalCommercialArea" placeholder="Auto-calculated" readonly>
+      </div>
+    </div>
+
+    <div class="camera-card">
+      <div class="camera-copy">
+        <h4>Property Photo</h4>
+        <p>Camera se photo click karke uska blob backend ko upload kijiye.</p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="captureAndBindPhoto()"
+        [disabled]="isCapturingPhoto">
+        {{ isCapturingPhoto ? 'Opening Camera...' : 'Take Photo' }}
+      </button>
+
+      <div class="photo-preview" *ngIf="photoPreviewUrl">
+        <img [src]="photoPreviewUrl" alt="Property photo preview">
+        <span>{{ photoFileName }}</span>
+      </div>
+
+      <p class="upload-success" *ngIf="propertyForm.get('image')?.value && !photoUploadError">
+        Photo base64 ke roop me `image` key par bind ho gayi hai.
+      </p>
+
+      <p class="upload-error" *ngIf="photoUploadError">{{ photoUploadError }}</p>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,55 @@
+.error-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(220, 38, 38, 0.16);
+  background: linear-gradient(135deg, rgba(254, 242, 242, 0.96), rgba(255, 255, 255, 0.92));
+  color: #991b1b;
+}
+
+.error-alert.compact {
+  padding: 0.85rem 1rem;
+}
+
+.error-icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.error-copy {
+  flex: 1;
+}
+
+.error-title,
+.error-message {
+  margin: 0;
+}
+
+.error-title {
+  font-weight: 700;
+}
+
+.error-message {
+  margin-top: 0.2rem;
+  color: #7f1d1d;
+  line-height: 1.45;
+}
+
+.retry-btn {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #991b1b;
+  color: #fff;
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+}

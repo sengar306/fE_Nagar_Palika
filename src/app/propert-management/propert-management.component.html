@@ -1,123 +1,107 @@
-<div class="top-bar">
-
-  <h2>Property List</h2>
-
-  <div class="right-section"
-       appClickOutside
-       (clickOutside)="closeMenus()">
-
-    <!-- Search Filter -->
-    <input
-      type="text"
-      placeholder="Search..."
-      class="search-input"
-      [(ngModel)]="searchText"
-      (keyup)="searchProperty()">
-
-    <i-feather
-      name="filter"
-      class="icon"
-      (click)="toggleFilterPopup()">
-    </i-feather>
-
-    <!-- FILTER POPUP -->
-    <div class="filter-popup" *ngIf="showFilterPopup">
-
-      <!-- Zone -->
-      <select (change)="filterZone($event)">
-        <option value="">Zone</option>
-        <option *ngFor="let z of zones" [value]="z.id">
-          {{z.name}}
-        </option>
-      </select>
-
-      <!-- Ward -->
-      <select (change)="filterWard($event)">
-        <option value="">Ward</option>
-        <option *ngFor="let w of wards" [value]="w.id">
-          {{w.name}}
-        </option>
-      </select>
-
-      <!-- Locality -->
-      <select (change)="filterLocality($event)">
-        <option value="">Locality</option>
-        <option *ngFor="let l of localities" [value]="l.id">
-          {{l.name}}
-        </option>
-      </select>
-
+<section class="property-shell">
+  <div class="toolbar card-shell" appClickOutside (clickOutside)="closeMenus()">
+    <div class="toolbar-copy">
+      <h2 class="section-title">Property List</h2>
+      <p class="section-subtitle">Search, filter aur records ko responsive view mein manage kijiye.</p>
     </div>
 
-    <!-- Column Icon -->
-    <i-feather
-      name="eye"
-      class="icon"
-      (click)="toggleColumnMenu()">
-    </i-feather>
-
-    <!-- Three dots -->
-    <span class="icon dots" (click)="toggleActionMenu()">⋯</span>
-
-    <!-- Column Dropdown -->
-    <div class="column-dropdown" *ngIf="showColumnDropdown">
-
-      <div *ngFor="let col of colDefs" class="column-item">
-
-        <i-feather
-          [name]="isColumnVisible(col) ? 'eye' : 'eye-off'"
-          class="icon"
-          (click)="toggleColumn(col)">
-        </i-feather>
-
-        <span>{{col.headerName}}</span>
-
+    <div class="toolbar-actions">
+      <div class="search-wrap">
+        <input
+          type="text"
+          placeholder="Search owner, PTIN, locality..."
+          class="search-input"
+          [formControl]="searchControl">
       </div>
 
+      <button type="button" class="icon-btn" (click)="toggleFilterPopup()" aria-label="Open filters">
+        <i-feather name="filter" class="icon"></i-feather>
+      </button>
+
+      <button type="button" class="icon-btn" (click)="toggleColumnMenu()" aria-label="Choose columns">
+        <i-feather name="eye" class="icon"></i-feather>
+      </button>
+
+      <button type="button" class="icon-btn" (click)="toggleActionMenu()" aria-label="Open actions">
+        <span class="dots">...</span>
+      </button>
     </div>
 
-    <!-- Action Dropdown -->
-    <div class="action-dropdown" *ngIf="showActionMenu">
+    @if (showFilterPopup) {
+      <div class="floating-panel filter-popup">
+        <select [value]="selectedZoneId || ''" (change)="filterZone($event)">
+          <option value="">All zones</option>
+          <option *ngFor="let z of zones" [value]="z.id">{{ z.name }}</option>
+        </select>
 
-      <div class="menu-item" (click)="openModal()">
-        <i-feather name="plus" class="menu-icon"></i-feather>
-        <span>Create</span>
+        <select [value]="selectedWardId || ''" (change)="filterWard($event)">
+          <option value="">All wards</option>
+          <option *ngFor="let w of wards" [value]="w.id">{{ w.name }}</option>
+        </select>
+
+        <select [value]="selectedLocalityId || ''" (change)="filterLocality($event)">
+          <option value="">All localities</option>
+          <option *ngFor="let l of localities" [value]="l.id">{{ l.name }}</option>
+        </select>
+
+        <button type="button" class="btn btn-clear" (click)="resetFilters()">Reset filters</button>
       </div>
+    }
 
-      <div class="menu-item">
-        <i-feather name="edit" class="menu-icon"></i-feather>
-        <span>Update</span>
+    @if (showColumnDropdown) {
+      <div class="floating-panel column-dropdown">
+        <div *ngFor="let col of colDefs" class="column-item" (click)="toggleColumn(col)">
+          <i-feather [name]="isColumnVisible(col) ? 'eye' : 'eye-off'" class="icon"></i-feather>
+          <span>{{ col.headerName }}</span>
+        </div>
       </div>
+    }
 
-      <div class="menu-item delete">
-        <i-feather name="trash-2" class="menu-icon"></i-feather>
-        <span>Delete</span>
+    @if (showActionMenu) {
+      <div class="floating-panel action-dropdown">
+        <button type="button" class="menu-item" (click)="openModal()">
+          <i-feather name="plus" class="menu-icon"></i-feather>
+          <span>Create Property</span>
+        </button>
       </div>
-
-    </div>
-
+    }
   </div>
 
-</div>
+  @if (errorMessage) {
+    <app-error-alert
+      title="Property data unavailable"
+      [message]="errorMessage"
+      [showRetry]="true"
+      (retry)="getAllProperty()">
+    </app-error-alert>
+  }
 
+  <div class="grid-card card-shell">
+    <div class="grid-meta">
+      <span>{{ rowData.length }} records loaded</span>
+      <strong>Tap any row to open details</strong>
+    </div>
 
-@if(isModal) {
+    <div class="grid-shell ag-theme-alpine">
+      <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        [rowData]="rowData"
+        [columnDefs]="colDefs"
+        [overlayNoRowsTemplate]="'<span class=&quot;ag-overlay-no-rows-center&quot;>No properties found for selected filters.</span>'"
+        [pagination]="true"
+        [paginationPageSize]="10"
+        [animateRows]="true"
+        (gridReady)="onGridReady($event)"
+        (rowClicked)="onRowClicked($event)">
+      </ag-grid-angular>
+    </div>
+  </div>
+</section>
+
+@if (isModal) {
   <div class="modal-overlay">
     <div class="modal-box">
       <app-create-property (close)="closeModal()"></app-create-property>
     </div>
   </div>
 }
-
-
-<div class="ag-theme-alpine" style="height:500px;width:100%;">
-  <ag-grid-angular
-    style="width:100%;height:100%;"
-    [rowData]="rowData"
-    (gridReady)="onGridReady($event)"
-    [columnDefs]="colDefs"
-    (rowClicked)="onRowClicked($event)"
-    pagination="true"
-    [gridOptions]="{ theme: 'legacy' }">
-  </ag-grid-angular>
-</div>

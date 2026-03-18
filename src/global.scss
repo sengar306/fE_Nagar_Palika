@@ -1,204 +1,178 @@
-
-/* RESET */
-
-body{
-margin:0;
-font-family:"Inter",sans-serif;
-background:#eef1f4;
-color:#222;
+:root {
+  --app-bg: #f4f7fb;
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: #ffffff;
+  --surface-muted: #eef4ff;
+  --border-soft: rgba(148, 163, 184, 0.24);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --brand: #2563eb;
+  --brand-deep: #1d4ed8;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.08);
+  --radius-lg: 28px;
+  --radius-md: 18px;
 }
 
-/* WRAPPER */
-
-.page-wrapper{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-/* LOGIN CARD */
-
-.login-card{
-width:100%;
-max-width:420px;
-background:#ffffff;
-border-radius:16px;
-padding:40px;
-box-shadow:0 20px 40px rgba(0,0,0,0.08);
-}
-
-/* LOGO */
-
-.login-logo{
-text-align:center;
-margin-bottom:10px;
-}
-
-.login-logo span{
-font-size:22px;
-font-weight:700;
-margin-left:8px;
-}
-
-.login-subtitle{
-text-align:center;
-color:#6c757d;
-margin-bottom:25px;
-}
-
-/* FORM */
-
-.form-control{
-border-radius:8px;
-padding:10px 14px;
-}
-
-input,
-select{
-width:100%;
-padding:10px;
-border:1px solid #dcdcdc;
-border-radius:6px;
-background:#fff;
-color:#000;
-font-size:14px;
-}
-
-input:focus,
-select:focus{
-outline:none;
-border-color:#6c63ff;
-box-shadow:0 0 3px rgba(108,99,255,0.4);
-}
-
-/* BUTTONS */
-
-.btn{
-padding:10px 24px;
-border:none;
-border-radius:8px;
-font-size:14px;
-cursor:pointer;
-transition:0.3s;
-}
-
-.btn-primary{
-background:#2563eb;
-color:white;
-}
-
-.btn-primary:hover{
-background:#1e4ed8;
-}
-
-.btn-back{
-background:#e5e7eb;
-color:#333;
-}
-
-.btn-clear{
-background:#6b7280;
-color:white;
-}
-
-/* MODAL FOOTER */
-
-.modal-footer{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-border-top:1px solid #eee;
-gap:10px;
-}
-
-/* HEADER */
-
-.header{
-background:white;
-border-bottom:1px solid #ddd;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-background:#ffffff;
-}
-
-/* ========================= */
-/* DARK THEME */
-/* ========================= */
-
-.dark-theme{
-background:#000;
-color:white;
-}
-
-/* HEADER */
-
-.dark-theme .header{
-background:#111;
-border-bottom:1px solid #333;
-}
-
-/* SIDEBAR */
-
-.dark-theme .sidebar{
-background:#111;
-color:white;
-}
-
-/* INPUTS */
-
-.dark-theme input,
-.dark-theme select{
-background:#222;
-color:white;
-border:1px solid #444;
-}
-
-/* CARD */
-
-.dark-theme .login-card{
-background:#1a1a1a;
-color:white;
-}
-
-/* BUTTONS */
-
-.dark-theme .btn{
-background:#333;
-color:white;
-}
-/* Universal AG Grid Styling for Angular/Ionic */
-
-/* Theme container must always have explicit height & width */
-.ag-theme-alpine,
-.ag-theme-alpine * {
-  box-sizing: border-box;   /* fix width/height calculations */
-}
-
-/* Force grid to take full parent size */
-.ag-theme-alpine {
-  height: 500px;           /* default height, override inline if needed */
-  width: 100%;
-  display: block;
-}
-
-/* Grid inner wrapper */
-.ag-root-wrapper {
-  height: 100% !important;
-  width: 100% !important;
-}
-
-/* Fix header height & scroll */
-.ag-header,
-.ag-body-viewport {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-/* Optional: scrollbar always visible */
+html,
+body,
+ion-app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.1), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08), transparent 25%),
+    var(--app-bg);
+  color: var(--text-primary);
+}
+
+body.dark-theme {
+  --app-bg: #07111f;
+  --surface: rgba(10, 19, 36, 0.88);
+  --surface-strong: #0f172a;
+  --surface-muted: rgba(37, 99, 235, 0.12);
+  --border-soft: rgba(148, 163, 184, 0.18);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --shadow-soft: 0 24px 60px rgba(2, 6, 23, 0.45);
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 25%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.14), transparent 30%),
+    var(--app-bg);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text-primary);
+  padding: 0.88rem 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+  background: rgba(15, 23, 42, 0.86);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.82rem 1.3rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+  box-shadow: 0 16px 30px rgba(37, 99, 235, 0.28);
+}
+
+.btn-back,
+.btn-clear {
+  background: rgba(226, 232, 240, 0.9);
+  color: var(--text-primary);
+}
+
+body.dark-theme .btn-back,
+body.dark-theme .btn-clear {
+  background: rgba(30, 41, 59, 0.92);
+  color: var(--text-primary);
+}
+
+.card-shell {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.section-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 800;
+}
+
+.section-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+}
+
+.ag-theme-alpine,
+.ag-theme-alpine * {
+  box-sizing: border-box;
+}
+
+.ag-theme-alpine {
+  height: 100%;
+  width: 100%;
+  display: block;
+  --ag-background-color: transparent;
+  --ag-foreground-color: var(--text-primary);
+  --ag-border-color: transparent;
+  --ag-row-border-color: rgba(148, 163, 184, 0.14);
+  --ag-header-background-color: rgba(226, 232, 240, 0.4);
+  --ag-header-foreground-color: var(--text-secondary);
+  --ag-font-size: 14px;
+  --ag-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.dark-theme .ag-theme-alpine {
+  --ag-header-background-color: rgba(15, 23, 42, 0.78);
+}
+
+.ag-root-wrapper {
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
 .ag-body-viewport {
   overflow: auto;
 }

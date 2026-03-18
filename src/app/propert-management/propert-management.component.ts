@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { CreatePropertyComponent } from "./create-property/create-property.component";
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { AgGridModule } from 'ag-grid-angular';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { CreatePropertyComponent } from './create-property/create-property.component';
 import { PropertyManagemnetService } from './property-managemnet-service';
-import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { IconsModule } from 'src/icons/icons-module';
 import { ClickOutsideDirective } from '../directive/click-outside';
-import { FormControl, FormsModule } from '@angular/forms';
-import { tap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { Router } from '@angular/router';
+import { ErrorAlertComponent } from '../shared/ui/error-alert/error-alert.component';
+import { ErrorMessageService } from '../shared/services/error-message.service';
+import { FeatherModule } from 'angular-feather';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -21,27 +24,24 @@ ModuleRegistry.registerModules([AllCommunityModule]);
     CommonModule,
     AgGridModule,
     IconsModule,
-    ClickOutsideDirective,FormsModule
+    ClickOutsideDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    ErrorAlertComponent,
   ],
 })
 export class PropertManagementComponent implements OnInit {
-
-  constructor(private service: PropertyManagemnetService,private router:Router) {}
-
   zones: any[] = [];
   wards: any[] = [];
   localities: any[] = [];
-    
-searchControl = new FormControl();
-loading = false;
-
-  rowData: any;
+  rowData: any[] = [];
+  searchControl = new FormControl('');
+  errorMessage = '';
 
   gridApi: any;
   columnApi: any;
 
   isModal = false;
-
   showColumnDropdown = false;
   showActionMenu = false;
   showFilterPopup = false;
@@ -49,52 +49,23 @@ loading = false;
   selectedZoneId: any;
   selectedWardId: any;
   selectedLocalityId: any;
-  searchText: any;
+
+  constructor(
+    private service: PropertyManagemnetService,
+    private router: Router,
+    private errorMessageService: ErrorMessageService
+  ) {}
 
   ngOnInit() {
     this.getAllProperty();
     this.loadZones();
-      this.searchControl.valueChanges.pipe(
 
-    tap(() => this.gridApi?.showLoadingOverlay()),
-
-    debounceTime(500),
-
-    distinctUntilChanged(),
-
-    switchMap((value:any) => {
-
-      const params:any = {}
-
-      if(this.selectedZoneId){
-        params.zoneId = this.selectedZoneId
-      }
-
-      if(this.selectedWardId){
-        params.wardId = this.selectedWardId
-      }
-
-      if(this.selectedLocalityId){
-        params.localityId = this.selectedLocalityId
-      }
-
-      if(value){
-        params.search = value
-      }
-
-      return this.service.getAllProperty(params)
-
-    })
-
-  ).subscribe((res:any)=>{
-      this.rowData = res.body
-    this.gridApi?.hideOverlay()
-  })
+    this.searchControl.valueChanges
+      .pipe(debounceTime(350), distinctUntilChanged())
+      .subscribe(() => this.getAllProperty());
   }
 
-  // AG GRID COLUMNS
   colDefs = [
-
     { headerName: 'Zone Name', field: 'zone.name', hide: true },
     { headerName: 'Ward Name', field: 'ward.name' },
     { headerName: 'Locality', field: 'locality.name' },
@@ -125,16 +96,15 @@ loading = false;
     { headerName: 'Proposed ARV', field: 'proposedArv' },
   ];
 
-  // GRID READY
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.columnApi = params.columnApi;
+    this.updateGridState();
   }
 
-  // GET PROPERTY WITH FILTER
   getAllProperty() {
-
     const params: any = {};
+    const searchValue = this.searchControl.value?.toString().trim();
 
     if (this.selectedZoneId) {
       params.zoneId = this.selectedZoneId;
@@ -148,96 +118,138 @@ loading = false;
       params.localityId = this.selectedLocalityId;
     }
 
-    if (this.searchText) {
-      params.search = this.searchText;
+    if (searchValue) {
+      params.search = searchValue;
     }
+
+    this.errorMessage = '';
+    this.gridApi?.showLoadingOverlay();
 
     this.service.getAllProperty(params).subscribe({
       next: (res: any) => {
-        this.rowData = res.body;
-      }
+        this.rowData = Array.isArray(res?.body) ? res.body : [];
+        this.updateGridState();
+      },
+      error: (err) => {
+        this.rowData = [];
+        this.errorMessage = this.errorMessageService.getMessage(
+          err,
+          'Property list load nahi ho paayi.'
+        );
+        this.updateGridState();
+      },
     });
-
   }
 
-  // LOAD ZONES
+  updateGridState() {
+    if (!this.gridApi) {
+      return;
+    }
+
+    if (this.rowData.length) {
+      this.gridApi.hideOverlay();
+      return;
+    }
+
+    this.gridApi.showNoRowsOverlay();
+  }
+
   loadZones() {
-    this.service.getZones().subscribe((res: any) => {
-      this.zones = res.body;
+    this.service.getZones().subscribe({
+      next: (res: any) => {
+        this.zones = Array.isArray(res?.body) ? res.body : [];
+      },
+      error: () => {
+        this.zones = [];
+      },
     });
   }
 
-  // LOAD WARDS
   loadWards(zoneId: number) {
-    this.service.getWard(zoneId).subscribe((res: any) => {
-      this.wards = res.body;
-      this.localities = [];
+    this.service.getWard(zoneId).subscribe({
+      next: (res: any) => {
+        this.wards = Array.isArray(res?.body) ? res.body : [];
+        this.localities = [];
+      },
+      error: () => {
+        this.wards = [];
+        this.localities = [];
+      },
     });
   }
 
-  // LOAD LOCALITIES
   loadLocalities(wardId: number) {
-    this.service.getLocality(wardId).subscribe((res: any) => {
-      this.localities = res.body;
+    this.service.getLocality(wardId).subscribe({
+      next: (res: any) => {
+        this.localities = Array.isArray(res?.body) ? res.body : [];
+      },
+      error: () => {
+        this.localities = [];
+      },
     });
   }
 
-  // FILTER ZONE
-  filterZone(event: any) {
-
-    this.selectedZoneId = event.target.value;
-
+  filterZone(event: Event) {
+    this.selectedZoneId = (event.target as HTMLSelectElement).value || null;
     this.selectedWardId = null;
     this.selectedLocalityId = null;
+    this.wards = [];
+    this.localities = [];
 
-    this.loadWards(this.selectedZoneId);
+    if (this.selectedZoneId) {
+      this.loadWards(this.selectedZoneId);
+    }
 
     this.getAllProperty();
   }
 
-  // FILTER WARD
-  filterWard(event: any) {
-
-    this.selectedWardId = event.target.value;
-
+  filterWard(event: Event) {
+    this.selectedWardId = (event.target as HTMLSelectElement).value || null;
     this.selectedLocalityId = null;
+    this.localities = [];
 
-    this.loadLocalities(this.selectedWardId);
-
-    this.getAllProperty();
-  }
-
-  // FILTER LOCALITY
-  filterLocality(event: any) {
-
-    this.selectedLocalityId = event.target.value;
+    if (this.selectedWardId) {
+      this.loadLocalities(this.selectedWardId);
+    }
 
     this.getAllProperty();
   }
 
-  // SEARCH
-  searchProperty() {
+  filterLocality(event: Event) {
+    this.selectedLocalityId = (event.target as HTMLSelectElement).value || null;
     this.getAllProperty();
   }
 
-  // MODAL
+  resetFilters() {
+    this.selectedZoneId = null;
+    this.selectedWardId = null;
+    this.selectedLocalityId = null;
+    this.wards = [];
+    this.localities = [];
+    this.searchControl.setValue('');
+    this.getAllProperty();
+  }
+
   openModal() {
     this.isModal = true;
+    this.closeMenus();
   }
 
   closeModal() {
     this.isModal = false;
+    this.getAllProperty();
   }
 
-  // COLUMN MENU
   toggleColumnMenu() {
     this.showColumnDropdown = !this.showColumnDropdown;
     this.showActionMenu = false;
+    this.showFilterPopup = false;
   }
 
   toggleActionMenu() {
     this.showActionMenu = !this.showActionMenu;
     this.showColumnDropdown = false;
+    this.showFilterPopup = false;
   }
 
   closeMenus() {
@@ -247,32 +259,30 @@ loading = false;
   }
 
   toggleColumn(col: any) {
-
     const id = col.colId || col.field;
-
     const column = this.gridApi.getColumn(id);
 
+    if (!column) {
+      return;
+    }
+
     const visible = column.isVisible();
-
     this.gridApi.setColumnsVisible([id], !visible);
-
   }
 
   isColumnVisible(col: any) {
-
     const id = col.colId || col.field;
-
-    const column = this.gridApi.getColumn(id);
-
+    const column = this.gridApi?.getColumn(id);
     return column ? column.isVisible() : true;
-
   }
 
   toggleFilterPopup() {
     this.showFilterPopup = !this.showFilterPopup;
+    this.showActionMenu = false;
+    this.showColumnDropdown = false;
   }
-onRowClicked(event:any)
-{
- this.router.navigate(['home/property', event.data.id]);
-}
+
+  onRowClicked(event: any) {
+    this.router.navigate(['home/property', event.data.id]);
+  }
 }

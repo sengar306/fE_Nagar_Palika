@@ -111,6 +111,36 @@
         placeholder="Enter Mobile Number">
     </div>
 
+    <div class="form-group">
+      <label>Latitude</label>
+      <input
+        type="text"
+        formControlName="latitude"
+        placeholder="Latitude auto-fill hoga"
+        readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Longitude</label>
+      <input
+        type="text"
+        formControlName="longitude"
+        placeholder="Longitude auto-fill hoga"
+        readonly>
+    </div>
+
+    <div class="form-group location-group">
+      <label>Current Location</label>
+      <button
+        type="button"
+        class="location-btn"
+        (click)="getCurrentLocation()"
+        [disabled]="isFetchingLocation">
+        {{ isFetchingLocation ? 'Getting Location...' : 'Use Mobile GPS' }}
+      </button>
+      <small *ngIf="locationError" class="location-error">{{ locationError }}</small>
+    </div>
+
     <!-- Street Name -->
     <div class="form-group">
       <label>Street Name</label>

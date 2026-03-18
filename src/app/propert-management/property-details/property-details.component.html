@@ -1,147 +1,124 @@
-<div class="property-details-container">
-  
-  <!-- Header Section -->
-  <div class="detail-header">
-    <div class="title-group">
-      <h1>Property Details: {{data.ptin}}</h1>
-      <span class="badge" [class.active]="!data.deactivateOldProperty">
-        {{ data.deactivateOldProperty ? 'Deactivated' : 'Active' }}
-      </span>
-    </div>
-    <div class="main-arv">
-      <small>Proposed ARV</small>
-      <p>₹{{data.proposedArv }}</p>
-    </div>
-  </div>
+@if (errorMessage) {
+  <app-error-alert
+    title="Property details unavailable"
+    [message]="errorMessage"
+    [showRetry]="true"
+    (retry)="getDataById()">
+  </app-error-alert>
+}
 
-  <div class="details-grid">
-    
-    <!-- Section 1: Basic & Location -->
-    <div class="detail-card">
-      <div class="card-header">Location Information</div>
-      <div class="card-body">
-        <div class="info-row"><span>Zone:</span> <strong>{{data.zone?.name}}</strong></div>
-        <div class="info-row"><span>Ward:</span> <strong>{{data.ward?.name}}</strong></div>
-        <div class="info-row"><span>Locality:</span> <strong>{{data.locality?.name}}</strong></div>
-        <div class="info-row"><span>House No:</span> <strong>{{data.houseNo}}</strong></div>
-        <div class="info-row"><span>Old House No:</span> <strong>{{data.oldHouseNo}}</strong></div>
+@if (data) {
+  <section class="property-details-container">
+    <div class="detail-header card-shell">
+      <div class="title-group">
+        <p class="eyebrow">Property profile</p>
+        <h1>{{ data.ptin || 'PTIN pending' }}</h1>
+        <span class="badge" [class.active]="!data.deactivateOldProperty">
+          {{ data.deactivateOldProperty ? 'Deactivated' : 'Active' }}
+        </span>
+      </div>
+
+      <div class="main-arv">
+        <small>Proposed ARV</small>
+        <p>Rs. {{ data.proposedArv || 0 }}</p>
       </div>
     </div>
 
-    <!-- Section 2: Owner Information -->
-    <div class="detail-card">
-      <div class="card-header">Owner Information</div>
-      <div class="card-body">
-        <div class="info-row"><span>Owner Name:</span> <strong>{{data.ownerName}}</strong></div>
-        <div class="info-row"><span>Father/Husband:</span> <strong>{{data.fatherName}}</strong></div>
-        <div class="info-row"><span>Mobile No:</span> <strong>{{data.mobileNo}}</strong></div>
-        <div class="info-row"><span>Gender:</span> <strong>{{data.gender}}</strong></div>
-        <div class="info-row"><span>Ownership:</span> <strong>{{data.ownership}}</strong></div>
-      </div>
-    </div>
-
-    <!-- Section 3: Tax Status -->
-    <div class="detail-card full-width">
-      <div class="card-header">Tax Liabilities & Status</div>
-      <div class="card-body tax-grid">
-        <div class="tax-item">
-          <label>House Tax</label>
-          <span class="status-icon" [class.yes]="data.houseTax">{{ data.houseTax ? '✔' : '✘' }}</span>
+    <div class="details-grid">
+      <article class="detail-card card-shell">
+        <div class="card-header">Location Information</div>
+        <div class="card-body">
+          <div class="info-row"><span>Zone</span><strong>{{ data.zone?.name || '-' }}</strong></div>
+          <div class="info-row"><span>Ward</span><strong>{{ data.ward?.name || '-' }}</strong></div>
+          <div class="info-row"><span>Locality</span><strong>{{ data.locality?.name || '-' }}</strong></div>
+          <div class="info-row"><span>House No</span><strong>{{ data.houseNo || '-' }}</strong></div>
+          <div class="info-row"><span>Old House No</span><strong>{{ data.oldHouseNo || '-' }}</strong></div>
         </div>
-        <div class="tax-item">
-          <label>Water Tax</label>
-          <span class="status-icon" [class.yes]="data.waterTax">{{ data.waterTax ? '✔' : '✘' }}</span>
-        </div>
-        <div class="tax-item">
-          <label>Sewer Tax</label>
-          <span class="status-icon" [class.yes]="data.sewerTax">{{ data.sewerTax ? '✔' : '✘' }}</span>
-        </div>
-      </div>
-    </div>
+      </article>
 
-    <!-- Section 4: Arrears & Surcharges (Table) -->
-    <div class="detail-card full-width">
-      <div class="card-header">Arrears & Surcharge Details</div>
-      <div class="card-body no-padding">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Tax Type</th>
-              <th>Arrear Amount</th>
-              <th>Surcharge</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>House Tax</td>
-              <td>₹{{data.arrearHouseTax}}</td>
-              <td>₹{{data.surchargeHouseTax}}</td>
-              <td>₹{{data.arrearHouseTax + data.surchargeHouseTax}}</td>
-            </tr>
-            <tr>
-              <td>Water Tax</td>
-              <td>₹{{data.arrearWaterTax}}</td>
-              <td>₹{{data.surchargeWaterTax}}</td>
-              <td>₹{{data.arrearWaterTax + data.surchargeWaterTax}}</td>
-            </tr>
-            <tr>
-              <td>Sewer Tax/ Drainage Tax</td>
-              <td>₹{{data.arrearSewerTax}}</td>
-              <td>₹{{data.surchargeSewerTax}}</td>
-              <td>₹{{data.arrearSewerTax + data.surchargeSewerTax}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <article class="detail-card card-shell">
+        <div class="card-header">Owner Information</div>
+        <div class="card-body">
+          <div class="info-row"><span>Owner Name</span><strong>{{ data.ownerName || '-' }}</strong></div>
+          <div class="info-row"><span>Father/Husband</span><strong>{{ data.fatherName || '-' }}</strong></div>
+          <div class="info-row"><span>Mobile No</span><strong>{{ data.mobileNo || '-' }}</strong></div>
+          <div class="info-row"><span>Gender</span><strong>{{ data.gender || '-' }}</strong></div>
+          <div class="info-row"><span>Ownership</span><strong>{{ data.ownership || '-' }}</strong></div>
+        </div>
+      </article>
 
-    <!-- Section 5: Floor Details -->
-    <div class="detail-card full-width">
-      <div class="card-header">Floor Wise Area Details</div>
-      <div class="card-body">
-        @if(data.floors && data.floors.length > 0) {
-          <div class="floor-list">
-             <!-- Loop through floors here -->
-                 <div class="card-body no-padding">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Floor Name</th>
-              <th>Category  </th>
-              <th>Construction Type</th>
-              <th>mrr</th>
-              </tr>
-            
-          </thead>
-          <tbody>
-            <tr>
-              <td>House Tax</td>
-              <td>₹{{data.arrearHouseTax}}</td>
-              <td>₹{{data.surchargeHouseTax}}</td>
-              <td>₹{{data.arrearHouseTax + data.surchargeHouseTax}}</td>
-            </tr>
-            <tr>
-              <td>Water Tax</td>
-              <td>₹{{data.arrearWaterTax}}</td>
-              <td>₹{{data.surchargeWaterTax}}</td>
-              <td>₹{{data.arrearWaterTax + data.surchargeWaterTax}}</td>
-            </tr>
-            <tr>
-              <td>Sewer Tax</td>
-              <td>₹{{data.arrearSewerTax}}</td>
-              <td>₹{{data.surchargeSewerTax}}</td>
-              <td>₹{{data.arrearSewerTax + data.surchargeSewerTax}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <article class="detail-card card-shell full-width">
+        <div class="card-header">Tax Liabilities</div>
+        <div class="card-body tax-grid">
+          <div class="tax-item">
+            <label>House Tax</label>
+            <span class="status-icon" [class.yes]="data.houseTax">{{ data.houseTax ? 'Yes' : 'No' }}</span>
           </div>
-        } @else {
-          <p class="empty-msg">No floor details available for this property.</p>
-        }
-      </div>
-    </div>
+          <div class="tax-item">
+            <label>Water Tax</label>
+            <span class="status-icon" [class.yes]="data.waterTax">{{ data.waterTax ? 'Yes' : 'No' }}</span>
+          </div>
+          <div class="tax-item">
+            <label>Sewer Tax</label>
+            <span class="status-icon" [class.yes]="data.sewerTax">{{ data.sewerTax ? 'Yes' : 'No' }}</span>
+          </div>
+        </div>
+      </article>
 
-  </div>
-</div>
+      <article class="detail-card card-shell full-width">
+        <div class="card-header">Arrears and Surcharges</div>
+        <div class="card-body no-padding">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tax Type</th>
+                <th>Arrear Amount</th>
+                <th>Surcharge</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>House Tax</td>
+                <td>Rs. {{ data.arrearHouseTax || 0 }}</td>
+                <td>Rs. {{ data.surchargeHouseTax || 0 }}</td>
+                <td>Rs. {{ (data.arrearHouseTax || 0) + (data.surchargeHouseTax || 0) }}</td>
+              </tr>
+              <tr>
+                <td>Water Tax</td>
+                <td>Rs. {{ data.arrearWaterTax || 0 }}</td>
+                <td>Rs. {{ data.surchargeWaterTax || 0 }}</td>
+                <td>Rs. {{ (data.arrearWaterTax || 0) + (data.surchargeWaterTax || 0) }}</td>
+              </tr>
+              <tr>
+                <td>Sewer Tax</td>
+                <td>Rs. {{ data.arrearSewerTax || 0 }}</td>
+                <td>Rs. {{ data.surchargeSewerTax || 0 }}</td>
+                <td>Rs. {{ (data.arrearSewerTax || 0) + (data.surchargeSewerTax || 0) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="detail-card card-shell full-width">
+        <div class="card-header">Floor Details</div>
+        <div class="card-body">
+          @if (data.floors && data.floors.length > 0) {
+            <div class="floor-list">
+              @for (floor of data.floors; track floor.floorNo) {
+                <div class="floor-item">
+                  <strong>Floor {{ floor.floorNo || '-' }}</strong>
+                  <span>{{ floor.usageType || 'Usage pending' }}</span>
+                  <span>{{ floor.occupancy || 'Occupancy pending' }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="empty-msg">No floor details available for this property.</p>
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+}

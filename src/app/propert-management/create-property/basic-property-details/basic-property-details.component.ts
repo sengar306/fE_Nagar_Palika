@@ -1,3 +1,4 @@
+  import { CommonModule } from '@angular/common';
   import { Component, Input, OnInit } from '@angular/core';
   import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   import { PropertyManagemnetService } from '../../property-managemnet-service';
@@ -7,7 +8,7 @@
     selector: 'app-basic-property-details',
     templateUrl: './basic-property-details.component.html',
     styleUrls: ['./basic-property-details.component.scss'],
-    imports:[ReactiveFormsModule]
+    imports:[ReactiveFormsModule, CommonModule]
   })
   export class BasicPropertyDetailsComponent implements OnInit {
 
@@ -16,6 +17,8 @@
     zones:any[]=[];
     wards:any[]=[];
     localities:any[]=[];
+    isFetchingLocation = false;
+    locationError = '';
 
     ownerships = [
     'Owner' ,
@@ -77,6 +80,35 @@
       this.propertyService.getLocality(wardId).subscribe((res:any)=>{
         this.localities = res.body;
       });
+    }
+
+    async getCurrentLocation() {
+      this.isFetchingLocation = true;
+      this.locationError = '';
+
+      try {
+        const coordinates = await new Promise<GeolocationPosition>((resolve, reject) => {
+          if (!navigator.geolocation) {
+            reject(new Error('Geolocation not supported'));
+            return;
+          }
+
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0,
+          });
+        });
+
+        this.propertyForm.patchValue({
+          latitude: coordinates.coords.latitude.toFixed(6),
+          longitude: coordinates.coords.longitude.toFixed(6),
+        });
+      } catch (error) {
+        this.locationError = 'GPS on karke location permission allow kijiye.';
+      } finally {
+        this.isFetchingLocation = false;
+      }
     }
 
   }

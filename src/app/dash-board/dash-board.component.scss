@@ -1,0 +1,131 @@
+.dashboard-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.hero-panel,
+.stats-grid,
+.dashboard-grid {
+  display: grid;
+}
+
+.hero-panel {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.hero-label {
+  margin: 0 0 0.35rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+
+.hero-panel h2,
+.card-head h3 {
+  margin: 0;
+}
+
+.hero-copy,
+.card-head p,
+.empty-copy,
+.property-row span {
+  color: var(--text-secondary);
+}
+
+.hero-chip {
+  padding: 1rem 1.2rem;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(14, 165, 233, 0.08));
+}
+
+.hero-chip span,
+.hero-chip strong {
+  display: block;
+}
+
+.hero-chip span {
+  margin-bottom: 0.25rem;
+  color: var(--text-secondary);
+}
+
+.stats-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  padding: 1.4rem;
+}
+
+.stat-card span {
+  display: block;
+  color: var(--text-secondary);
+}
+
+.stat-card strong {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 2rem;
+}
+
+.stat-card.accent {
+  background: linear-gradient(135deg, rgba(220, 252, 231, 0.85), rgba(255, 255, 255, 0.9));
+}
+
+.stat-card.soft {
+  background: linear-gradient(135deg, rgba(255, 247, 237, 0.95), rgba(255, 255, 255, 0.9));
+}
+
+.dashboard-grid {
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1rem;
+}
+
+.list-card,
+.zone-card {
+  padding: 1.4rem;
+}
+
+.card-head {
+  margin-bottom: 1rem;
+}
+
+.property-list,
+.zone-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.property-row,
+.zone-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(226, 232, 240, 0.35);
+}
+
+.property-row strong,
+.property-row span,
+.row-meta span {
+  display: block;
+}
+
+.row-meta span,
+.zone-row strong {
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid,
+  .dashboard-grid,
+  .hero-panel {
+    grid-template-columns: 1fr;
+  }
+}

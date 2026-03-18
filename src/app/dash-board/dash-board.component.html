@@ -1,3 +1,89 @@
-<p>
-  dash-board works!
-</p>
+<section class="dashboard-shell">
+  <div class="hero-panel card-shell">
+    <div>
+      <p class="hero-label">Welcome</p>
+      <h2>{{ userName }}</h2>
+      <p class="hero-copy">
+        Property records, status aur location-wise overview ek hi jagah par.
+      </p>
+    </div>
+
+    <div class="hero-chip">
+      <span>System focus</span>
+      <strong>Clear UI + stable workflow</strong>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <app-error-alert
+      title="Dashboard unavailable"
+      [message]="errorMessage"
+      [showRetry]="true"
+      (retry)="loadDashboard()">
+    </app-error-alert>
+  }
+
+  <div class="stats-grid">
+    <article class="stat-card card-shell">
+      <span>Total Properties</span>
+      <strong>{{ propertyCount }}</strong>
+    </article>
+
+    <article class="stat-card card-shell accent">
+      <span>Active Records</span>
+      <strong>{{ activePropertyCount }}</strong>
+    </article>
+
+    <article class="stat-card card-shell soft">
+      <span>Without PTIN</span>
+      <strong>{{ draftPropertyCount }}</strong>
+    </article>
+  </div>
+
+  <div class="dashboard-grid">
+    <article class="list-card card-shell">
+      <div class="card-head">
+        <div>
+          <h3>Recent Properties</h3>
+          <p>Latest loaded entries</p>
+        </div>
+      </div>
+
+      <div class="property-list">
+        @for (item of recentProperties; track item.id) {
+          <div class="property-row">
+            <div>
+              <strong>{{ item.ownerName || 'Owner pending' }}</strong>
+              <span>{{ item.locality?.name || 'No locality' }} • {{ item.ward?.name || 'No ward' }}</span>
+            </div>
+            <div class="row-meta">
+              <span>{{ item.ptin || 'PTIN pending' }}</span>
+            </div>
+          </div>
+        } @empty {
+          <p class="empty-copy">Abhi property records available nahi hain.</p>
+        }
+      </div>
+    </article>
+
+    <article class="zone-card card-shell">
+      <div class="card-head">
+        <div>
+          <h3>Zone Snapshot</h3>
+          <p>Top zones by record count</p>
+        </div>
+      </div>
+
+      <div class="zone-list">
+        @for (zone of zoneSnapshot; track zone.name) {
+          <div class="zone-row">
+            <span>{{ zone.name }}</span>
+            <strong>{{ zone.count }}</strong>
+          </div>
+        } @empty {
+          <p class="empty-copy">Zone summary abhi available nahi hai.</p>
+        }
+      </div>
+    </article>
+  </div>
+</section>

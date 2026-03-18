@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -43,5 +42,17 @@ getPropetyById(id:any){
 let url=`${this.baseUrl}/api/property/byid?id=${id}`
   return this.http.get(url,{observe:'response'})
 
+}
+
+uploadPropertyPhoto(file: Blob, fileName: string, propertyId?: string | number | null) {
+  const formData = new FormData();
+  formData.append('file', file, fileName);
+
+  if (propertyId !== null && propertyId !== undefined && propertyId !== '') {
+    formData.append('propertyId', String(propertyId));
+  }
+
+  const url = `${this.baseUrl}/api/property/upload-photo`;
+  return this.http.post(url, formData, { observe: 'response' });
 }
 }
