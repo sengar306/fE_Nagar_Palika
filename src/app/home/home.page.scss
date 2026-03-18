@@ -1,21 +1,32 @@
-.layout {
+.layout-shell {
   display: flex;
+  min-height: 100vh;
 }
 
-.main {
-  margin-left: 250px;
+.main-panel {
   width: 100%;
+  margin-left: 280px;
 }
 
-.content {
-  padding: 20px;
-  // background: #f5f7fb;
-  min-height: calc(100vh - 60px);
+.content-shell {
+  min-height: calc(100vh - 88px);
+  padding: 1.25rem;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .main {
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: rgba(15, 23, 42, 0.42);
+  z-index: 1090;
+}
+
+@media (max-width: 900px) {
+  .main-panel {
     margin-left: 0;
+  }
+
+  .content-shell {
+    padding: 1rem;
   }
 }

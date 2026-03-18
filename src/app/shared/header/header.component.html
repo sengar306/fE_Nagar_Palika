@@ -1,18 +1,30 @@
-<header class="header">
-
-  <button 
-    class="menu-btn"
-    (click)="toggleSidebar()">
-    ☰
-  </button>
-
-  <div class="profile">
-    <button class="theme-btn" (click)="toggleTheme()">
-      {{isDark ? '☀️' : '🌙'}}
+<header class="header-shell card-shell">
+  <div class="header-left">
+    <button class="menu-btn" type="button" (click)="toggleSidebar()" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
 
-    <img src="https://i.pravatar.cc/150?img=3" class="profile-img">
-    <span>{{tokenData.name}}</span>
+    <div>
+      <p class="eyebrow">Municipal workflow</p>
+      <h1>Property Administration</h1>
+    </div>
   </div>
 
+  <div class="header-actions">
+    <button class="theme-btn" type="button" (click)="toggleTheme()">
+      {{ isDark ? 'Light mode' : 'Dark mode' }}
+    </button>
+
+    <div class="profile-card">
+      <div class="avatar">{{ tokenData?.name?.[0] || 'A' }}</div>
+      <div class="profile-copy">
+        <strong>{{ tokenData?.name || 'Admin User' }}</strong>
+        <span>Authorized user</span>
+      </div>
+    </div>
+
+    <button class="logout-btn" type="button" (click)="logout()">Logout</button>
+  </div>
 </header>

@@ -1,41 +1,91 @@
-.sidebar {
-  width: 250px;
+.sidebar-shell {
+  width: 280px;
   height: 100vh;
-  // background: #fff;
-  border-right: 1px solid #eee;
-  padding: 20px;
   position: fixed;
   left: 0;
   top: 0;
-
-  transition: 0.3s;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.4rem;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+  color: #e2e8f0;
+  box-shadow: 20px 0 50px rgba(15, 23, 42, 0.2);
 }
 
-.sidebar ul {
-  list-style: none;
-  margin-top: 30px;
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
 }
 
-.sidebar li {
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  cursor: pointer;
+.brand-mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #38bdf8, #2563eb);
+  color: #fff;
+  font-weight: 800;
 }
 
-.sidebar li.active,
-.sidebar li:hover {
-  background: #e6f0ff;
-  color: #2563eb;
+.brand-block p,
+.sidebar-footer p,
+.sidebar-footer span {
+  margin: 0;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .sidebar {
-    left: -250px;
+.brand-block p,
+.sidebar-footer span {
+  color: rgba(226, 232, 240, 0.7);
+}
+
+.menu-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.menu-item {
+  text-align: left;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  border-radius: 22px;
+  padding: 1rem;
+}
+
+.menu-item strong,
+.menu-item span {
+  display: block;
+}
+
+.menu-item span {
+  margin-top: 0.2rem;
+  color: rgba(226, 232, 240, 0.66);
+  font-size: 0.85rem;
+}
+
+.menu-item.active {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.35), rgba(56, 189, 248, 0.18));
+  border-color: rgba(96, 165, 250, 0.4);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 900px) {
+  .sidebar-shell {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
   }
 
-  .sidebar.mobile-open {
-    left: 0;
+  .sidebar-shell.mobile-open {
+    transform: translateX(0);
   }
 }

@@ -1,45 +1,50 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { ClickOutsideDirective } from "src/app/directive/click-outside";
 
 @Component({
   selector: 'app-side-bar',
   templateUrl: './side-bar.component.html',
-  styleUrls: ['./side-bar.component.scss'],  
-    imports: [RouterModule, ClickOutsideDirective],
-  standalone:true
-
+  styleUrls: ['./side-bar.component.scss'],
+  imports: [RouterModule, CommonModule],
+  standalone: true,
 })
-export class SideBarComponent  implements OnInit {
+export class SideBarComponent implements OnInit {
   @Input() isOpen = false;
-  constructor(private router:Router) { }
-@Output() close=new EventEmitter()
+  @Output() close = new EventEmitter<void>();
+
+  readonly menuItems = [
+    {
+      label: 'Dashboard',
+      route: '/home/dashboard',
+      hint: 'Overview and quick stats',
+    },
+    {
+      label: 'Property',
+      route: '/home/property',
+      hint: 'Search and manage records',
+    },
+  ];
+
+  constructor(
+    private router: Router
+  ) {}
+
   ngOnInit() {}
-     selectedMenu = signal<string>('dashboard');
- onClick(menu: string) {
-  this.isOpen=false
-this.router.navigate([menu]);
+
+  onClick(menu: string) {
+    this.router.navigate([menu]);
+    this.close.emit();
   }
 
+  isActive(route: string) {
+    return this.router.url.startsWith(route);
+  }
 
-   
-    @HostListener('document:click', ['$event'])
-  clickOutside(event: Event) {
-
-    const sidebar = document.querySelector('app-side-bar');
-    const menuBtn = document.querySelector('.menu-btn');
-
-    if (
-      this.isOpen &&
-      sidebar && 
-      !sidebar.contains(event.target as Node) &&
-      menuBtn && 
-      !menuBtn.contains(event.target as Node)
-    ) {
-     this.close.emit()
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.isOpen) {
+      this.close.emit();
     }
-
   }
-
 }
-

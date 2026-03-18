@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { LoginPageComponent } from './auth/component/login-page/login-page.component';
-import { Router, RouterModule } from '@angular/router';
+import { IonApp } from '@ionic/angular/standalone';
+import { RouterModule } from '@angular/router';
+import { LoaderOverlayComponent } from './shared/ui/loader-overlay/loader-overlay.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp,RouterModule],
-  
+  styleUrl: 'app.component.scss',
+  imports: [IonApp, RouterModule, LoaderOverlayComponent],
 })
 export class AppComponent {
   constructor() {}

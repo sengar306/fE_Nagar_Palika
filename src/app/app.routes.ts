@@ -7,24 +7,23 @@ import { DashBoardComponent } from './dash-board/dash-board.component';
 import { PropertyDetailsComponent } from './propert-management/property-details/property-details.component';
 
 export const routes: Routes = [
- {
+  {
     path: 'login',
-    component:LoginPageComponent
+    component: LoginPageComponent,
   },
   {
-    path:'home',
-    component:HomePage,
-     canActivate: [authGuard]   ,
-       children: [
+    path: 'home',
+    component: HomePage,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'property', component: PropertManagementComponent },
-      {path:'dashboard',component:DashBoardComponent},
- { 
-    path: 'property/:id', 
-    component: PropertyDetailsComponent // Aapka component jahan data dikhana hai
-  }
-
-    ]
-
+      { path: 'dashboard', component: DashBoardComponent },
+      {
+        path: 'property/:id',
+        component: PropertyDetailsComponent,
+      },
+    ],
   },
   {
     path: '',

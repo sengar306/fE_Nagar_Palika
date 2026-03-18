@@ -1,55 +1,88 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-additional-parameters',
   templateUrl: './additional-parameters.component.html',
   styleUrls: ['./additional-parameters.component.scss'],
-  imports:[ReactiveFormsModule,CommonModule]
+  imports: [ReactiveFormsModule, CommonModule]
 })
-export class AdditionalParametersComponent  implements OnInit {
-@Input() propertyForm!:FormGroup
+export class AdditionalParametersComponent {
+  @Input() propertyForm!: FormGroup;
+  photoPreviewUrl = '';
+  photoFileName = '';
+  photoUploadError = '';
+  isCapturingPhoto = false;
 
-constructor(private fb: FormBuilder) {}
-  ngOnInit() {}
+  constructor(private fb: FormBuilder) {}
 
-propertyTypes: string[] = [
-  'अन्य',
-  'अन्य प्रतिष्ठान',
-  'अर्धसरकारी कार्यालय',
-  'आवास और क्लिनिक',
-  'आवास और दुकान',
-  'आवास और मेडिकल स्टोर',
-  'इमारत',
-  'एटीएम',
-  'ऑफिस',
-  'औद्योगिक इकाइयां',
-  'क्रीड़ा केंद्र',
-  'क्लब',
-  'कल्याण मंडप',
-  'क्लिनिक',
-  'कारखाना',
-  'कोचिंग'
-];
+  propertyTypes: string[] = [
+    'Anya',
+    'Anya Pratishthan',
+    'Ardh Sarkari Karyalay',
+    'Aawas aur Clinic',
+    'Aawas aur Dukan',
+    'Aawas aur Medical Store',
+    'Imarat',
+    'ATM',
+    'Office',
+    'Audyogik Ikai',
+    'Kreeda Kendra',
+    'Club',
+    'Kalyan Mandap',
+    'Clinic',
+    'Karkhana',
+    'Coaching'
+  ];
 
-propertyCategories = [
-  'Residential',
-  'Commercial' ,
-  'Mixed'
-]
+  propertyCategories = [
+    'Residential',
+    'Commercial',
+    'Mixed'
+  ];
 
+  get floors(): FormArray {
+    const floors = this.propertyForm.get('floors');
+    return floors ? (floors as FormArray) : this.fb.array([]);
+  }
 
-get floors(): FormArray {
-  const floors = this.propertyForm.get('floors');
-  return floors ? (floors as FormArray) : this.fb.array([]);
-}
+  toggleAccordion(index: number) {
+    this.floors.controls.forEach((floor: any, i: number) => {
+      const current = floor.get('expanded')?.value;
+      floor.get('expanded')?.setValue(i === index ? !current : false);
+    });
+  }
 
-toggleAccordion(index: number) {
-  this.floors.controls.forEach((floor: any, i: number) => {
-    const current = floor.get('expanded')?.value;
+  async captureAndBindPhoto() {
+    this.photoUploadError = '';
+    this.isCapturingPhoto = true;
 
-    floor.get('expanded')?.setValue(i === index ? !current : false);
-  });
-}
+    try {
+      const photo = await Camera.getPhoto({
+        quality: 80,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
+
+      if (!photo.dataUrl) {
+        this.photoUploadError = 'Photo data nahi mila.';
+        return;
+      }
+
+      this.photoPreviewUrl = photo.dataUrl;
+      this.photoFileName = `property-photo-${Date.now()}.${photo.format ?? 'jpeg'}`;
+      this.propertyForm.patchValue({
+        image: photo.dataUrl,
+      });
+    } catch (error: any) {
+      if (error?.message && !String(error.message).toLowerCase().includes('cancel')) {
+        this.photoUploadError = 'Camera access ya photo capture fail ho gaya.';
+      }
+    } finally {
+      this.isCapturingPhoto = false;
+    }
+  }
 }
