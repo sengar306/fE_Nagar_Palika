@@ -1,90 +1,114 @@
-<div class="section-wrapper" [formGroup]="propertyForm">
+<div class="form-wrapper" [formGroup]="propertyForm">
 
-  <div class="form-grid">
+  <!-- Is Plot Empty -->
+  <div class="form-group">
+    <label class="label">
+      <input type="checkbox" formControlName="isPlotEmpty">
+      Is Plot Empty
+    </label>
+  </div>
 
-    <!-- Property Type -->
-    
+  <!-- House Age -->
+  <div class="form-group">
+    <label class="label">House Age</label>
+    <select formControlName="houseAge">
+      <option value="">Select House Age</option>
+      <option value="1-10">1-10 Years</option>
+      <option value="10-20">10-20 Years</option>
+      <option value="20+">20+ Years</option>
+    </select>
+  </div>
 
-    <!-- Property Category -->
+  <!-- Floors -->
+  <div *ngIf="!propertyForm.get('isPlotEmpty')?.value">
+
+    <!-- No of Floors -->
     <div class="form-group">
-      <label>Property Category</label>
-
-      <select formControlName="propertyCategoryId">
-
-        <option [ngValue]="null">Select Category</option>
-
-        @for(category of propertyCategories; track category){
-        <option [ngValue]="category">
-          {{category}}
-        </option>
-        }
-
-      </select>
-    </div>
-<div class="form-group">
-      <label>Property Type</label>
-      <select formControlName="propertyTypeId">
-
-        <option [ngValue]="null">Select Property Type</option>
-
-        @for(type of propertyTypes; track type){
-        <option [ngValue]="type">
-          {{type}}
-        </option>
-        }
-
-      </select>
-    </div>
-    <!-- ARV Residential -->
-    <div class="form-group">
-      <label>ARV Residential</label>
-      <input type="text" formControlName="arvResidential" placeholder="ARV Residential">
+      <label class="label">No of Floors</label>
+      <input type="number" formControlName="noOfFloors">
     </div>
 
-    <!-- ARV Effective -->
-    <div class="form-group">
-      <label>ARV Effective From</label>
-      <input type="date" formControlName="arvEffectiveFrom">
-    </div>
+    <!-- Floors -->
+    <div formArrayName="floors">
 
-    <!-- Applicable Taxes -->
-    <div class="form-group full-row">
+      <div *ngFor="let floor of floors.controls; let i = index"
+           [formGroupName]="i"
+           class="accordion">
 
-      <label>Applicable Taxes</label>
+        <!-- HEADER -->
+        <div class="accordion-header" (click)="toggleAccordion(i)">
+          <div class="left">
+            <span class="icon">🏢</span>
+            <span>Floor {{i + 1}}</span>
+          </div>
 
-      <div class="checkbox-group">
+          <div class="right">
+            <span class="arrow">
+              {{ floor.get('expanded')?.value ? '▲' : '▼' }}
+            </span>
+          </div>
+        </div>
 
-        <label class="checkbox-item">
-          <input type="checkbox" formControlName="houseTax">
-          House Tax
-        </label>
+        <!-- BODY -->
+        <div *ngIf="floor.get('expanded')?.value" class="accordion-body">
+          <!-- Property Type -->
+               <div class="form-group">
+            <label class="label">Total Area</label>
+            <input formControlName="totalArea" placeholder="Enter total area">
+          </div>
+          <div class="form-group">
+            <label class="label">Property Type</label>
+            <select formControlName="propertyType">
+              <option value="">Select</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+            </select>
+          </div>
 
-        <label class="checkbox-item">
-          <input type="checkbox" formControlName="waterTax">
-          Water Tax
-        </label>
+          <!-- Property Used As -->
+       <div class="form-group">
+  <label>Property Used As</label>
 
-        <label class="checkbox-item">
-          <input type="checkbox" formControlName="sewerTax">
-          Sewer / Drainage Tax
-        </label>
+  <select formControlName="usageType" class="custom-select">
+    <option value="">Select</option>
+
+    @for (item of propertyTypes; track item) {
+      <option [value]="item">{{ item }}</option>
+    }
+
+  </select>
+</div>
+          <!-- Occupancy -->
+          <div class="form-group">
+            <label class="label">Occupancy</label>
+            <input formControlName="occupancy" placeholder="Owner / Tenant">
+          </div>
+
+          <!-- Is Rented -->
+          <div class="form-group">
+            <label class="label">Is Rented?</label>
+
+            <div class="radio">
+              <label>
+                <input type="radio" value="yes" formControlName="isRented"> Yes
+              </label>
+
+              <label>
+                <input type="radio" value="no" formControlName="isRented"> No
+              </label>
+            </div>
+          </div>
+
+          <!-- Rented Area -->
+          <div class="form-group" *ngIf="floor.get('isRented')?.value === 'yes'">
+            <label class="label">Rented Area</label>
+            <input formControlName="rentedArea" placeholder="Enter rented area">
+          </div>
+
+        </div>
 
       </div>
 
-    </div>
-
-    <!-- Attach Documents -->
-    <div class="form-group">
-      <label>Attach Documents</label>
-      <input type="file">
-    </div>
-
-    <!-- Deactivate -->
-    <div class="form-group">
-      <label class="checkbox-item">
-        <input type="checkbox" formControlName="deactivateOldProperty">
-        Deactivate Selected Old Property
-      </label>
     </div>
 
   </div>
