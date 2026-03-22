@@ -56,7 +56,7 @@ export class DashBoardComponent implements OnInit {
       error: (err) => {
         this.errorMessage = this.errorMessageService.getMessage(
           err,
-          'Dashboard data load nahi ho paaya.'
+          'Dashboard data could not be loaded.'
         );
       },
     });

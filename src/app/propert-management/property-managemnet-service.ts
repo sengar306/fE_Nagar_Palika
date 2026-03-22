@@ -55,4 +55,8 @@ uploadPropertyPhoto(file: Blob, fileName: string, propertyId?: string | number |
   const url = `${this.baseUrl}/api/property/upload-photo`;
   return this.http.post(url, formData, { observe: 'response' });
 }
+getRoadWidth(){
+  let url=`${this.baseUrl}/api/master/loadRoadWidth`
+  return this.http.get(url,{observe:'response'})
+}
 }

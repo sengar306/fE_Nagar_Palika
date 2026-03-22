@@ -110,9 +110,9 @@ export class CreatePropertyComponent implements OnInit {
   createFloor(): FormGroup {
     return this.fb.group({
       floorNo: [''],
-      totalArea: [''],
-      usageType: [''],
-      propertyType: [''],
+      builtUpArea: [''],
+      constructionType: [''],
+      category: [''],
       occupancy: [''],
       rentedArea: [''],
       isRented: [false],
@@ -227,7 +227,7 @@ export class CreatePropertyComponent implements OnInit {
       error: (err) => {
         this.submitError = this.errorMessageService.getMessage(
           err,
-          'Property save nahi ho paayi.'
+          'The property could not be saved.'
         );
       },
     });

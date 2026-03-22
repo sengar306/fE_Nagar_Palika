@@ -38,7 +38,7 @@ export class PropertyDetailsComponent implements OnInit {
         this.data = null;
         this.errorMessage = this.errorMessageService.getMessage(
           err,
-          'Property details load nahi ho paaye.'
+          'Property details could not be loaded.'
         );
       },
     });

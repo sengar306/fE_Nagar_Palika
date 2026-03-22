@@ -11,8 +11,8 @@
   <section class="property-details-container">
     <div class="detail-header card-shell">
       <div class="title-group">
-        <p class="eyebrow">Property profile</p>
-        <h1>{{ data.ptin || 'PTIN pending' }}</h1>
+        <p class="eyebrow">Property Profile</p>
+        <h1>{{ data.ptin || 'PTIN not assigned' }}</h1>
         <span class="badge" [class.active]="!data.deactivateOldProperty">
           {{ data.deactivateOldProperty ? 'Deactivated' : 'Active' }}
         </span>
@@ -26,24 +26,52 @@
 
     <div class="details-grid">
       <article class="detail-card card-shell">
-        <div class="card-header">Location Information</div>
+        <div class="card-header">Basic Property Information</div>
         <div class="card-body">
-          <div class="info-row"><span>Zone</span><strong>{{ data.zone?.name || '-' }}</strong></div>
-          <div class="info-row"><span>Ward</span><strong>{{ data.ward?.name || '-' }}</strong></div>
-          <div class="info-row"><span>Locality</span><strong>{{ data.locality?.name || '-' }}</strong></div>
-          <div class="info-row"><span>House No</span><strong>{{ data.houseNo || '-' }}</strong></div>
-          <div class="info-row"><span>Old House No</span><strong>{{ data.oldHouseNo || '-' }}</strong></div>
+          <div class="info-row"><span>Property Sequence Number</span><strong>{{ data.propertySequenceNo || data.sequenceNo || '-' }}</strong></div>
+          <div class="info-row"><span>Owner Name</span><strong>{{ data.ownerName || '-' }}</strong></div>
+          <div class="info-row"><span>Father / Husband Name</span><strong>{{ data.fatherName || '-' }}</strong></div>
+          <div class="info-row"><span>Mobile Number</span><strong>{{ data.mobileNo || '-' }}</strong></div>
+          <div class="info-row"><span>Ownership</span><strong>{{ data.ownership || '-' }}</strong></div>
+          <div class="info-row"><span>Gender</span><strong>{{ data.gender || '-' }}</strong></div>
         </div>
       </article>
 
       <article class="detail-card card-shell">
-        <div class="card-header">Owner Information</div>
+        <div class="card-header">Location Information</div>
         <div class="card-body">
-          <div class="info-row"><span>Owner Name</span><strong>{{ data.ownerName || '-' }}</strong></div>
-          <div class="info-row"><span>Father/Husband</span><strong>{{ data.fatherName || '-' }}</strong></div>
-          <div class="info-row"><span>Mobile No</span><strong>{{ data.mobileNo || '-' }}</strong></div>
-          <div class="info-row"><span>Gender</span><strong>{{ data.gender || '-' }}</strong></div>
-          <div class="info-row"><span>Ownership</span><strong>{{ data.ownership || '-' }}</strong></div>
+          <div class="info-row"><span>Zone</span><strong>{{ data.zone?.name || '-' }}</strong></div>
+          <div class="info-row"><span>Ward</span><strong>{{ data.ward?.name || '-' }}</strong></div>
+          <div class="info-row"><span>Ward Name</span><strong>{{ data.wardName || '-' }}</strong></div>
+          <div class="info-row"><span>Locality</span><strong>{{ data.locality?.name || '-' }}</strong></div>
+          <div class="info-row"><span>Street Name</span><strong>{{ data.streetName || '-' }}</strong></div>
+          <div class="info-row"><span>Street Number</span><strong>{{ data.streetNo || '-' }}</strong></div>
+          <div class="info-row"><span>Road Width</span><strong>{{ data.roadWidth || '-' }}</strong></div>
+        </div>
+      </article>
+
+      <article class="detail-card card-shell">
+        <div class="card-header">Building and Plot Details</div>
+        <div class="card-body">
+          <div class="info-row"><span>House Number</span><strong>{{ data.houseNo || '-' }}</strong></div>
+          <div class="info-row"><span>Old House Number</span><strong>{{ data.oldHouseNo || '-' }}</strong></div>
+          <div class="info-row"><span>Building Type</span><strong>{{ data.builtType || '-' }}</strong></div>
+          <div class="info-row"><span>Total Plot Area</span><strong>{{ data.plotArea || data.totalPlotArea || 0 }}</strong></div>
+          <div class="info-row"><span>Building Age</span><strong>{{ data.houseAge || '-' }}</strong></div>
+          <div class="info-row"><span>Vacant Plot</span><strong>{{ data.isPlotEmpty ? 'Yes' : 'No' }}</strong></div>
+          <div class="info-row"><span>Number of Floors</span><strong>{{ data.noOfFloors || 0 }}</strong></div>
+        </div>
+      </article>
+
+      <article class="detail-card card-shell">
+        <div class="card-header">Assessment and Coordinates</div>
+        <div class="card-body">
+          <div class="info-row"><span>Property Type ID</span><strong>{{ data.propertyTypeId || '-' }}</strong></div>
+          <div class="info-row"><span>Property Category ID</span><strong>{{ data.propertyCategoryId || '-' }}</strong></div>
+          <div class="info-row"><span>Total Residential Area</span><strong>{{ data.totalResidentialArea || 0 }}</strong></div>
+          <div class="info-row"><span>Total Commercial Area</span><strong>{{ data.totalCommercialArea || 0 }}</strong></div>
+          <div class="info-row"><span>Latitude</span><strong>{{ data.latitude || '-' }}</strong></div>
+          <div class="info-row"><span>Longitude</span><strong>{{ data.longitude || '-' }}</strong></div>
         </div>
       </article>
 
@@ -102,6 +130,19 @@
       </article>
 
       <article class="detail-card card-shell full-width">
+        <div class="card-header">Property Image</div>
+        <div class="card-body">
+          @if (data.image) {
+            <div class="image-wrap">
+              <img [src]="data.image" alt="Property image">
+            </div>
+          } @else {
+            <p class="empty-msg">No property image is available.</p>
+          }
+        </div>
+      </article>
+
+      <article class="detail-card card-shell full-width">
         <div class="card-header">Floor Details</div>
         <div class="card-body">
           @if (data.floors && data.floors.length > 0) {
@@ -109,13 +150,17 @@
               @for (floor of data.floors; track floor.floorNo) {
                 <div class="floor-item">
                   <strong>Floor {{ floor.floorNo || '-' }}</strong>
-                  <span>{{ floor.usageType || 'Usage pending' }}</span>
-                  <span>{{ floor.occupancy || 'Occupancy pending' }}</span>
+                  <span>Property Type: {{ floor.propertyType || '-' }}</span>
+                  <span>Usage Type: {{ floor.usageType || '-' }}</span>
+                  <span>Occupancy: {{ floor.occupancy || '-' }}</span>
+                  <span>Total Area: {{ floor.totalArea || 0 }}</span>
+                  <span>Rented: {{ floor.isRented || 'No' }}</span>
+                  <span>Rented Area: {{ floor.rentedArea || 0 }}</span>
                 </div>
               }
             </div>
           } @else {
-            <p class="empty-msg">No floor details available for this property.</p>
+            <p class="empty-msg">No floor details are available for this property.</p>
           }
         </div>
       </article>

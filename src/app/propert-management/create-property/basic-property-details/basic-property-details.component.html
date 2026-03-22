@@ -1,13 +1,9 @@
 <div class="form-wrapper" [formGroup]="propertyForm">
-
   <div class="form-grid">
-
-    <!-- Zone -->
     <div class="form-group">
       <label>Zone</label>
       <select formControlName="zone">
         <option [ngValue]="null">Select Zone</option>
-
         @for(zone of zones; track zone.id){
         <option [ngValue]="zone">
           {{zone.name}}
@@ -16,170 +12,113 @@
       </select>
     </div>
 
-    <!-- Ward -->
     <div class="form-group">
       <label>Ward</label>
       <select formControlName="ward">
-
         <option [ngValue]="null">Select Ward</option>
-
         @for(ward of wards; track ward.id){
         <option [ngValue]="ward">
           {{ward.name}}
         </option>
         }
-
       </select>
     </div>
 
-    <!-- Ward Name -->
     <div class="form-group">
       <label>Ward Name</label>
-      <input 
-        type="text" 
-        formControlName="wardName"
-        placeholder="Enter Ward Name">
+      <input type="text" formControlName="wardName" placeholder="Enter ward name">
     </div>
 
-    <!-- Locality -->
     <div class="form-group">
-      <label>Locality Name</label>
+      <label>Locality</label>
       <select formControlName="locality">
-
         <option [ngValue]="null">Select Locality</option>
-
         @for(locality of localities; track locality.id){
         <option [ngValue]="locality">
           {{locality.name}}
         </option>
         }
-
       </select>
     </div>
 
-    <!-- Owner -->
     <div class="form-group">
       <label>Owner Name</label>
-      <input 
-        type="text" 
-        formControlName="ownerName"
-        placeholder="Enter Owner Name">
+      <input type="text" formControlName="ownerName" placeholder="Enter owner name">
     </div>
 
-    <!-- Father/Husband -->
     <div class="form-group">
       <label>Father / Husband Name</label>
-      <input 
-        type="text" 
-        formControlName="fatherName"
-        placeholder="Enter Father / Husband Name">
+      <input type="text" formControlName="fatherName" placeholder="Enter father or husband name">
     </div>
 
-    <!-- Old House -->
     <div class="form-group">
-      <label>Old House No</label>
-      <input 
-        type="text" 
-        formControlName="oldHouseNo"
-        placeholder="Enter Old House No">
+      <label>Old House Number</label>
+      <input type="text" formControlName="oldHouseNo" placeholder="Enter old house number">
     </div>
 
-    <!-- New Sequence -->
     <div class="form-group">
-      <label>New Sequence No</label>
-      <input 
-        type="text" 
-        formControlName="sequenceNo"
-        placeholder="Enter New Sequence No">
+      <label>New Sequence Number</label>
+      <input type="text" formControlName="sequenceNo" placeholder="Enter new sequence number">
     </div>
 
-    <!-- Road Width -->
     <div class="form-group">
       <label>Road Width</label>
-      <input 
-        type="text" 
-        formControlName="roadWidth"
-        placeholder="Enter Road Width (in ft)">
+        <select formControlName="roadWidth">
+        <option [ngValue]="null">Select road Width</option>
+        @for(locality of roadWidth; track locality){
+        <option [ngValue]="locality">
+          {{locality.width}}
+        </option>
+        }
+      </select>
     </div>
 
-    <!-- Mobile -->
     <div class="form-group">
-      <label>Mobile No</label>
-      <input 
-        type="text" 
-        formControlName="mobileNo"
-        placeholder="Enter Mobile Number">
+      <label>Mobile Number</label>
+      <input type="text" formControlName="mobileNo" placeholder="Enter mobile number">
     </div>
 
     <div class="form-group">
       <label>Latitude</label>
-      <input
-        type="text"
-        formControlName="latitude"
-        placeholder="Latitude auto-fill hoga"
-        readonly>
+      <input type="text" formControlName="latitude" placeholder="Latitude will be filled automatically" readonly>
     </div>
 
     <div class="form-group">
       <label>Longitude</label>
-      <input
-        type="text"
-        formControlName="longitude"
-        placeholder="Longitude auto-fill hoga"
-        readonly>
+      <input type="text" formControlName="longitude" placeholder="Longitude will be filled automatically" readonly>
     </div>
 
     <div class="form-group location-group">
       <label>Current Location</label>
-      <button
-        type="button"
-        class="location-btn"
-        (click)="getCurrentLocation()"
-        [disabled]="isFetchingLocation">
-        {{ isFetchingLocation ? 'Getting Location...' : 'Use Mobile GPS' }}
+      <button type="button" class="location-btn" (click)="getCurrentLocation()" [disabled]="isFetchingLocation">
+        {{ isFetchingLocation ? 'Fetching Location...' : 'Use Device Location' }}
       </button>
       <small *ngIf="locationError" class="location-error">{{ locationError }}</small>
     </div>
 
-    <!-- Street Name -->
     <div class="form-group">
       <label>Street Name</label>
-      <input 
-        type="text" 
-        formControlName="streetName"
-        placeholder="Enter Street Name">
+      <input type="text" formControlName="streetName" placeholder="Enter street name">
     </div>
 
-    <!-- Street No -->
     <div class="form-group">
-      <label>Street No</label>
-      <input 
-        type="text" 
-        formControlName="streetNo"
-        placeholder="Enter Street No">
+      <label>Street Number</label>
+      <input type="text" formControlName="streetNo" placeholder="Enter street number">
     </div>
-   <div class="form-group">
-  <label>Built Type</label>
 
-  <select formControlName="builtType">
-    <option value="">Select Built Type</option>
+    <div class="form-group">
+      <label>Building Type</label>
+      <select formControlName="builtType">
+        <option value="">Select Building Type</option>
+        <option value="kaccha">Temporary</option>
+        <option value="pakka">Permanent</option>
+        <option value="ardh_pakka">Semi-permanent</option>
+      </select>
+    </div>
 
-    <option value="kaccha">कच्चा</option>
-    <option value="pakka">पक्का</option>
-    <option value="ardh_pakka">अर्धपक्का</option>
-
-  </select>
-</div>
-
-    <!-- Total Plot Area -->
     <div class="form-group">
       <label>Total Plot Area</label>
-      <input 
-        type="text" 
-        formControlName="plotArea"
-        placeholder="Enter Total Plot Area (sq ft)">
+      <input type="text" formControlName="plotArea" placeholder="Enter total plot area in sq ft">
     </div>
-
   </div>
-
 </div>

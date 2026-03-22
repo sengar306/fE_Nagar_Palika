@@ -1,18 +1,17 @@
 <div class="form-wrapper" [formGroup]="propertyForm">
-  
   <div class="top-grid">
     <div class="form-group toggle-card">
       <label class="checkbox-label">
         <input type="checkbox" formControlName="isPlotEmpty">
-        <span>Is Plot Empty</span>
+        <span>Is the Plot Vacant?</span>
       </label>
-      <small>Empty plot hone par floor details hide ho jayengi.</small>
+      <small>If the plot is vacant, floor details will be hidden.</small>
     </div>
 
     <div class="form-group">
-      <label class="label">House Age</label>
+      <label class="label">Building Age</label>
       <select formControlName="houseAge">
-        <option value="">Select House Age</option>
+        <option value="">Select Building Age</option>
         <option value="1-10">1-10 Years</option>
         <option value="10-20">10-20 Years</option>
         <option value="20+">20+ Years</option>
@@ -20,8 +19,8 @@
     </div>
 
     <div class="form-group" *ngIf="!propertyForm.get('isPlotEmpty')?.value">
-      <label class="label">No of Floors</label>
-      <input type="number" min="0" formControlName="noOfFloors" placeholder="Enter number of floors">
+      <label class="label">Number of Floors</label>
+      <input type="number" min="0" formControlName="noOfFloors" placeholder="Enter the number of floors">
     </div>
   </div>
 
@@ -32,10 +31,7 @@
     </div>
 
     <div formArrayName="floors" class="floor-list">
-      <div
-        *ngFor="let floor of floors.controls; let i = index"
-        [formGroupName]="i"
-        class="accordion">
+      <div *ngFor="let floor of floors.controls; let i = index" [formGroupName]="i" class="accordion">
         <button type="button" class="accordion-header" (click)="toggleAccordion(i)">
           <div class="left">
             <span class="floor-badge">{{ i + 1 }}</span>
@@ -54,24 +50,23 @@
           <div class="form-grid">
             <div class="form-group">
               <label class="label">Total Area</label>
-              <input formControlName="totalArea" placeholder="Enter total area">
+              <input formControlName="builtUpArea" placeholder="Enter total area">
             </div>
 
             <div class="form-group">
               <label class="label">Property Type</label>
-              <select formControlName="propertyType">
-                <option value="">Select</option>
+              <select formControlName="category">
+                <option value="">Select Property Type</option>
                 <option value="Residential">Residential</option>
                 <option value="Commercial">Commercial</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label class="label">Property Used As</label>
-              <select formControlName="usageType" class="custom-select">
-                <option value="">Select</option>
-
-                @for (item of propertyTypes; track item) {
+              <label class="label">Construction Type</label>
+              <select formControlName="constructionType" class="custom-select">
+                <option value="">Select Usage Type</option>
+                @for (item of contructionType; track item) {
                   <option [value]="item">{{ item }}</option>
                 }
               </select>
@@ -84,7 +79,6 @@
 
             <div class="form-group full-width">
               <label class="label">Is Rented?</label>
-
               <div class="radio">
                 <label class="radio-option">
                   <input type="radio" value="yes" formControlName="isRented">
@@ -110,27 +104,23 @@
     <div class="totals-grid">
       <div class="form-group total-card">
         <label class="label">Total Residential Area</label>
-        <input formControlName="totalResidentialArea" placeholder="Auto-calculated" readonly>
+        <input formControlName="totalResidentialArea" placeholder="Calculated automatically" readonly>
       </div>
 
       <div class="form-group total-card">
         <label class="label">Total Commercial Area</label>
-        <input formControlName="totalCommercialArea" placeholder="Auto-calculated" readonly>
+        <input formControlName="totalCommercialArea" placeholder="Calculated automatically" readonly>
       </div>
     </div>
 
     <div class="camera-card">
       <div class="camera-copy">
         <h4>Property Photo</h4>
-        <p>Camera se photo click karke uska blob backend ko upload kijiye.</p>
+        <p>Capture a property photo and bind it to the form as a Base64 image.</p>
       </div>
 
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="captureAndBindPhoto()"
-        [disabled]="isCapturingPhoto">
-        {{ isCapturingPhoto ? 'Opening Camera...' : 'Take Photo' }}
+      <button type="button" class="btn btn-primary" (click)="captureAndBindPhoto()" [disabled]="isCapturingPhoto">
+        {{ isCapturingPhoto ? 'Opening Camera...' : 'Capture Photo' }}
       </button>
 
       <div class="photo-preview" *ngIf="photoPreviewUrl">
@@ -139,7 +129,7 @@
       </div>
 
       <p class="upload-success" *ngIf="propertyForm.get('image')?.value && !photoUploadError">
-        Photo base64 ke roop me `image` key par bind ho gayi hai.
+        The photo has been bound to the form under the `image` field.
       </p>
 
       <p class="upload-error" *ngIf="photoUploadError">{{ photoUploadError }}</p>

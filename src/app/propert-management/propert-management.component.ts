@@ -134,7 +134,7 @@ export class PropertManagementComponent implements OnInit {
         this.rowData = [];
         this.errorMessage = this.errorMessageService.getMessage(
           err,
-          'Property list load nahi ho paayi.'
+          'The property list could not be loaded.'
         );
         this.updateGridState();
       },

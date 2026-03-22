@@ -11,8 +11,7 @@
     imports:[ReactiveFormsModule, CommonModule]
   })
   export class BasicPropertyDetailsComponent implements OnInit {
-
-
+  roadWidth:any
   @Input()propertyForm!:FormGroup
     zones:any[]=[];
     wards:any[]=[];
@@ -39,7 +38,7 @@
     ngOnInit(){
 
     
-
+      this.loadRoadWidth()
       this.loadZones();
 
   // Zone change
@@ -105,10 +104,19 @@
           longitude: coordinates.coords.longitude.toFixed(6),
         });
       } catch (error) {
-        this.locationError = 'GPS on karke location permission allow kijiye.';
+        this.locationError = 'Please enable GPS and allow location access.';
       } finally {
         this.isFetchingLocation = false;
       }
     }
+     loadRoadWidth(){
+      this.propertyService.getRoadWidth().subscribe({
+        next:(res:any)=>{
+          if (res){
+            this.roadWidth=res.body
+          }
+        }
+      })
 
+     }
   }
