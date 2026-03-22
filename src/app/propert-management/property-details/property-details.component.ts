@@ -43,4 +43,38 @@ export class PropertyDetailsComponent implements OnInit {
       },
     });
   }
+
+  getStatusLabel(value: unknown): string {
+    return value ? 'Yes' : 'No';
+  }
+
+  getDisplayValue(value: unknown, fallback = '-'): string | number {
+    return value === null || value === undefined || value === '' ? fallback : (value as string | number);
+  }
+
+  getRoadWidthLabel(): string {
+    return this.data?.roadWidth?.width || this.data?.roadWidth?.name || '-';
+  }
+
+  getPropertyTypeLabel(): string {
+    return (
+      this.data?.propertyType?.name ||
+      this.data?.propertyType?.type ||
+      this.data?.propertyType ||
+      '-'
+    );
+  }
+
+  getFloorLabel(floor: any): string {
+    return (
+      floor?.category ||
+      floor?.propertyType?.name ||
+      floor?.propertyType ||
+      '-'
+    );
+  }
+
+  getFloorArea(floor: any): string | number {
+    return floor?.builtUpArea ?? floor?.totalArea ?? 0;
+  }
 }
