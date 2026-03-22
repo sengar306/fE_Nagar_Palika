@@ -4,13 +4,13 @@
       <p class="hero-label">Welcome</p>
       <h2>{{ userName }}</h2>
       <p class="hero-copy">
-        Property records, status aur location-wise overview ek hi jagah par.
+        View property records, operational status, and zone-level performance from one dashboard.
       </p>
     </div>
 
     <div class="hero-chip">
-      <span>System focus</span>
-      <strong>Clear UI + stable workflow</strong>
+      <span>System Focus</span>
+      <strong>Accurate records and efficient operations</strong>
     </div>
   </div>
 
@@ -45,7 +45,7 @@
       <div class="card-head">
         <div>
           <h3>Recent Properties</h3>
-          <p>Latest loaded entries</p>
+          <p>Recently added or updated records</p>
         </div>
       </div>
 
@@ -53,15 +53,15 @@
         @for (item of recentProperties; track item.id) {
           <div class="property-row">
             <div>
-              <strong>{{ item.ownerName || 'Owner pending' }}</strong>
-              <span>{{ item.locality?.name || 'No locality' }} • {{ item.ward?.name || 'No ward' }}</span>
+              <strong>{{ item.ownerName || 'Owner not available' }}</strong>
+              <span>{{ item.locality?.name || 'Locality not assigned' }} • {{ item.ward?.name || 'Ward not assigned' }}</span>
             </div>
             <div class="row-meta">
-              <span>{{ item.ptin || 'PTIN pending' }}</span>
+              <span>{{ item.ptin || 'PTIN not assigned' }}</span>
             </div>
           </div>
         } @empty {
-          <p class="empty-copy">Abhi property records available nahi hain.</p>
+          <p class="empty-copy">No property records are available at the moment.</p>
         }
       </div>
     </article>
@@ -81,7 +81,7 @@
             <strong>{{ zone.count }}</strong>
           </div>
         } @empty {
-          <p class="empty-copy">Zone summary abhi available nahi hai.</p>
+          <p class="empty-copy">Zone summary data is currently unavailable.</p>
         }
       </div>
     </article>

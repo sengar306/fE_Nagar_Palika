@@ -11,39 +11,105 @@
   <section class="property-details-container">
     <div class="detail-header card-shell">
       <div class="title-group">
-        <p class="eyebrow">Property profile</p>
-        <h1>{{ data.ptin || 'PTIN pending' }}</h1>
+        <p class="eyebrow">Property Profile</p>
+        <h1>{{ data.ptin || ('Property ID #' + data.id) }}</h1>
+        <p class="subtitle">
+          {{ data.ownerName || 'Owner not available' }} |
+          {{ data.locality?.name || 'Locality not available' }}
+        </p>
         <span class="badge" [class.active]="!data.deactivateOldProperty">
           {{ data.deactivateOldProperty ? 'Deactivated' : 'Active' }}
         </span>
       </div>
 
-      <div class="main-arv">
-        <small>Proposed ARV</small>
-        <p>Rs. {{ data.proposedArv || 0 }}</p>
+      <div class="header-metrics">
+        <div class="main-arv">
+          <small>Total Tax</small>
+          <p>Rs. {{ data.totalTax || 0 }}</p>
+        </div>
+
+        <div class="metric-chip">
+          <span>Total ARV</span>
+          <strong>{{ data.totalArv || 0 }}</strong>
+        </div>
       </div>
+    </div>
+
+    <div class="summary-grid">
+      <article class="summary-card card-shell">
+        <span>Residential ARV</span>
+        <strong>{{ data.arvResidential || 0 }}</strong>
+      </article>
+
+      <article class="summary-card card-shell">
+        <span>Commercial ARV</span>
+        <strong>{{ data.arvCommercial || 0 }}</strong>
+      </article>
+
+      <article class="summary-card card-shell">
+        <span>Plot Area</span>
+        <strong>{{ data.plotArea || data.totalPlotArea || 0 }}</strong>
+      </article>
+
+      <article class="summary-card card-shell">
+        <span>Last Bill Date</span>
+        <strong>{{ data.lastBillDate || '-' }}</strong>
+      </article>
     </div>
 
     <div class="details-grid">
       <article class="detail-card card-shell">
-        <div class="card-header">Location Information</div>
+        <div class="card-header">Basic Property Information</div>
         <div class="card-body">
-          <div class="info-row"><span>Zone</span><strong>{{ data.zone?.name || '-' }}</strong></div>
-          <div class="info-row"><span>Ward</span><strong>{{ data.ward?.name || '-' }}</strong></div>
-          <div class="info-row"><span>Locality</span><strong>{{ data.locality?.name || '-' }}</strong></div>
-          <div class="info-row"><span>House No</span><strong>{{ data.houseNo || '-' }}</strong></div>
-          <div class="info-row"><span>Old House No</span><strong>{{ data.oldHouseNo || '-' }}</strong></div>
+          <div class="info-row"><span>Property ID</span><strong>{{ getDisplayValue(data.id) }}</strong></div>
+          <div class="info-row"><span>Property Sequence Number</span><strong>{{ getDisplayValue(data.propertySequenceNo || data.sequenceNo) }}</strong></div>
+          <div class="info-row"><span>Owner Name</span><strong>{{ getDisplayValue(data.ownerName) }}</strong></div>
+          <div class="info-row"><span>Father / Husband Name</span><strong>{{ getDisplayValue(data.fatherName) }}</strong></div>
+          <div class="info-row"><span>Mobile Number</span><strong>{{ getDisplayValue(data.mobileNo) }}</strong></div>
+          <div class="info-row"><span>Ownership</span><strong>{{ getDisplayValue(data.ownership) }}</strong></div>
+          <div class="info-row"><span>Gender</span><strong>{{ getDisplayValue(data.gender) }}</strong></div>
         </div>
       </article>
 
       <article class="detail-card card-shell">
-        <div class="card-header">Owner Information</div>
+        <div class="card-header">Location Information</div>
         <div class="card-body">
-          <div class="info-row"><span>Owner Name</span><strong>{{ data.ownerName || '-' }}</strong></div>
-          <div class="info-row"><span>Father/Husband</span><strong>{{ data.fatherName || '-' }}</strong></div>
-          <div class="info-row"><span>Mobile No</span><strong>{{ data.mobileNo || '-' }}</strong></div>
-          <div class="info-row"><span>Gender</span><strong>{{ data.gender || '-' }}</strong></div>
-          <div class="info-row"><span>Ownership</span><strong>{{ data.ownership || '-' }}</strong></div>
+          <div class="info-row"><span>Zone</span><strong>{{ getDisplayValue(data.zone?.name) }}</strong></div>
+          <div class="info-row"><span>Ward</span><strong>{{ getDisplayValue(data.ward?.name) }}</strong></div>
+          <div class="info-row"><span>Ward Name</span><strong>{{ getDisplayValue(data.wardName) }}</strong></div>
+          <div class="info-row"><span>Locality</span><strong>{{ getDisplayValue(data.locality?.name) }}</strong></div>
+          <div class="info-row"><span>Street Name</span><strong>{{ getDisplayValue(data.streetName) }}</strong></div>
+          <div class="info-row"><span>Street Number</span><strong>{{ getDisplayValue(data.streetNo) }}</strong></div>
+          <div class="info-row"><span>Road Width</span><strong>{{ getRoadWidthLabel() }}</strong></div>
+        </div>
+      </article>
+
+      <article class="detail-card card-shell">
+        <div class="card-header">Building and Plot Details</div>
+        <div class="card-body">
+          <div class="info-row"><span>House Number</span><strong>{{ getDisplayValue(data.houseNo) }}</strong></div>
+          <div class="info-row"><span>Old House Number</span><strong>{{ getDisplayValue(data.oldHouseNo) }}</strong></div>
+          <div class="info-row"><span>Building Type</span><strong>{{ getDisplayValue(data.builtType) }}</strong></div>
+          <div class="info-row"><span>Property Type</span><strong>{{ getPropertyTypeLabel() }}</strong></div>
+          <div class="info-row"><span>Total Plot Area</span><strong>{{ data.plotArea || data.totalPlotArea || 0 }}</strong></div>
+          <div class="info-row"><span>Building Age</span><strong>{{ getDisplayValue(data.houseAge) }}</strong></div>
+          <div class="info-row"><span>Vacant Plot</span><strong>{{ getStatusLabel(data.isPlotEmpty) }}</strong></div>
+          <div class="info-row"><span>Number of Floors</span><strong>{{ data.noOfFloors || 0 }}</strong></div>
+          <div class="info-row"><span>Rented Property</span><strong>{{ getStatusLabel(data.isRented) }}</strong></div>
+        </div>
+      </article>
+
+      <article class="detail-card card-shell">
+        <div class="card-header">Assessment and Coordinates</div>
+        <div class="card-body">
+          <div class="info-row"><span>ARV Residential</span><strong>{{ data.arvResidential || 0 }}</strong></div>
+          <div class="info-row"><span>ARV Commercial</span><strong>{{ data.arvCommercial || 0 }}</strong></div>
+          <div class="info-row"><span>ARV Effective From</span><strong>{{ getDisplayValue(data.arvEffectiveFrom) }}</strong></div>
+          <div class="info-row"><span>Proposed ARV</span><strong>{{ data.proposedArv || 0 }}</strong></div>
+          <div class="info-row"><span>Total Residential Area</span><strong>{{ data.totalResidentialArea || 0 }}</strong></div>
+          <div class="info-row"><span>Total Commercial Area</span><strong>{{ data.totalCommercialArea || 0 }}</strong></div>
+          <div class="info-row"><span>Latitude</span><strong>{{ getDisplayValue(data.latitude) }}</strong></div>
+          <div class="info-row"><span>Longitude</span><strong>{{ getDisplayValue(data.longitude) }}</strong></div>
         </div>
       </article>
 
@@ -52,15 +118,15 @@
         <div class="card-body tax-grid">
           <div class="tax-item">
             <label>House Tax</label>
-            <span class="status-icon" [class.yes]="data.houseTax">{{ data.houseTax ? 'Yes' : 'No' }}</span>
+            <span class="status-icon" [class.yes]="data.houseTax">{{ getStatusLabel(data.houseTax) }}</span>
           </div>
           <div class="tax-item">
             <label>Water Tax</label>
-            <span class="status-icon" [class.yes]="data.waterTax">{{ data.waterTax ? 'Yes' : 'No' }}</span>
+            <span class="status-icon" [class.yes]="data.waterTax">{{ getStatusLabel(data.waterTax) }}</span>
           </div>
           <div class="tax-item">
             <label>Sewer Tax</label>
-            <span class="status-icon" [class.yes]="data.sewerTax">{{ data.sewerTax ? 'Yes' : 'No' }}</span>
+            <span class="status-icon" [class.yes]="data.sewerTax">{{ getStatusLabel(data.sewerTax) }}</span>
           </div>
         </div>
       </article>
@@ -102,6 +168,19 @@
       </article>
 
       <article class="detail-card card-shell full-width">
+        <div class="card-header">Property Image</div>
+        <div class="card-body">
+          @if (data.image) {
+            <div class="image-wrap">
+              <img [src]="data.image" alt="Property image">
+            </div>
+          } @else {
+            <p class="empty-msg">No property image is available.</p>
+          }
+        </div>
+      </article>
+
+      <article class="detail-card card-shell full-width">
         <div class="card-header">Floor Details</div>
         <div class="card-body">
           @if (data.floors && data.floors.length > 0) {
@@ -109,13 +188,17 @@
               @for (floor of data.floors; track floor.floorNo) {
                 <div class="floor-item">
                   <strong>Floor {{ floor.floorNo || '-' }}</strong>
-                  <span>{{ floor.usageType || 'Usage pending' }}</span>
-                  <span>{{ floor.occupancy || 'Occupancy pending' }}</span>
+                  <span>Property Type: {{ getFloorLabel(floor) }}</span>
+                  <span>Construction Type: {{ getDisplayValue(floor.constructionType) }}</span>
+                  <span>Occupancy: {{ getDisplayValue(floor.occupancy) }}</span>
+                  <span>Total Area: {{ getFloorArea(floor) }}</span>
+                  <span>Rented: {{ getStatusLabel(floor.isRented === 'yes' || floor.isRented === true) }}</span>
+                  <span>Rented Area: {{ floor.rentedArea || 0 }}</span>
                 </div>
               }
             </div>
           } @else {
-            <p class="empty-msg">No floor details available for this property.</p>
+            <p class="empty-msg">No floor details are available for this property.</p>
           }
         </div>
       </article>

@@ -18,24 +18,9 @@ export class AdditionalParametersComponent {
 
   constructor(private fb: FormBuilder) {}
 
-  propertyTypes: string[] = [
-    'Anya',
-    'Anya Pratishthan',
-    'Ardh Sarkari Karyalay',
-    'Aawas aur Clinic',
-    'Aawas aur Dukan',
-    'Aawas aur Medical Store',
-    'Imarat',
-    'ATM',
-    'Office',
-    'Audyogik Ikai',
-    'Kreeda Kendra',
-    'Club',
-    'Kalyan Mandap',
-    'Clinic',
-    'Karkhana',
-    'Coaching'
-  ];
+  contructionType: string[] = [
+   'PAKKA',
+   'KACCHA'  ];
 
   propertyCategories = [
     'Residential',
@@ -68,7 +53,7 @@ export class AdditionalParametersComponent {
       });
 
       if (!photo.dataUrl) {
-        this.photoUploadError = 'Photo data nahi mila.';
+        this.photoUploadError = 'Photo data could not be captured.';
         return;
       }
 
@@ -79,7 +64,7 @@ export class AdditionalParametersComponent {
       });
     } catch (error: any) {
       if (error?.message && !String(error.message).toLowerCase().includes('cancel')) {
-        this.photoUploadError = 'Camera access ya photo capture fail ho gaya.';
+        this.photoUploadError = 'Camera access failed or the photo could not be captured.';
       }
     } finally {
       this.isCapturingPhoto = false;

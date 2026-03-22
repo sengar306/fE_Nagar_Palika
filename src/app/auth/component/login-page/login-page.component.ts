@@ -59,7 +59,7 @@ export class LoginPageComponent implements OnInit {
       error: (err) => {
         this.loginError = this.errorMessageService.getMessage(
           err,
-          'Login nahi ho paaya. Credentials dobara check kijiye.'
+          'Sign-in failed. Please verify your credentials and try again.'
         );
       },
     });

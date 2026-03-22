@@ -18,7 +18,7 @@ export class ErrorMessageService {
       }
 
       if (error.status === 0) {
-        return 'Server se connect nahi ho pa raha. Please internet ya API status check kijiye.';
+        return 'Unable to connect to the server. Please check your internet connection or API status.';
       }
     }
 
