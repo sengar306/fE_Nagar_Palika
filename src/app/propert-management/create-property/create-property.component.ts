@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BasicPropertyDetailsComponent } from './basic-property-details/basic-property-details.component';
 import { AdditionalParametersComponent } from './additional-parameters/additional-parameters.component';
 import { PropertyManagemnetService } from '../property-managemnet-service';
 import { ErrorAlertComponent } from 'src/app/shared/ui/error-alert/error-alert.component';
 import { ErrorMessageService } from 'src/app/shared/services/error-message.service';
+import { concatMap, finalize, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-create-property',
@@ -26,11 +28,16 @@ export class CreatePropertyComponent implements OnInit {
   heading: any;
   step = 1;
   submitError = '';
+  isSubmitting = false;
+  showSuccess = false;
+  createdPropertyId: number | string | null = null;
+  createdPtin = '';
 
   constructor(
     private fb: FormBuilder,
     private service: PropertyManagemnetService,
-    private errorMessageService: ErrorMessageService
+    private errorMessageService: ErrorMessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -108,16 +115,25 @@ export class CreatePropertyComponent implements OnInit {
   }
 
   createFloor(): FormGroup {
-    return this.fb.group({
+  
+  
+   let floor=this.fb.group({
       floorNo: [''],
       builtUpArea: [''],
-      constructionType: [''],
+      emptyArea:[''],
+      constructionType: [this.propertyForm.get('builtType')?.value],
       category: [''],
       occupancy: [''],
       rentedArea: [''],
       isRented: [false],
       expanded: [false],
     });
+    
+  if(this.propertyForm.get('propertyType')?.value!='Mixed'){
+     floor.get('category')?.patchValue(this.propertyForm.get('propertyType')?.value)
+    }
+   
+    return floor;
   }
 
   generateFloors(count: number) {
@@ -202,6 +218,9 @@ export class CreatePropertyComponent implements OnInit {
     });
     this.clearFloors();
     this.submitError = '';
+    this.showSuccess = false;
+    this.createdPropertyId = null;
+    this.createdPtin = '';
     this.step = 1;
     this.setHeading();
   }
@@ -214,22 +233,87 @@ export class CreatePropertyComponent implements OnInit {
       case 2:
         this.heading = 'Additional Property Details';
         break;
+      case 3:
+        this.heading = 'Property Created Successfully';
+        break;
     }
+  }
+  get createdPropertyLabel(): string {
+    if (this.createdPtin) {
+      return this.createdPtin;
+    }
+
+    if (this.createdPropertyId !== null && this.createdPropertyId !== undefined) {
+      return String(this.createdPropertyId);
+    }
+
+    return '-';
+  }
+
+  get canOpenCreatedProperty(): boolean {
+    return this.createdPropertyId !== null && this.createdPropertyId !== undefined && this.createdPropertyId !== '';
+  }
+
+  private extractCreatedProperty(response: any): any {
+    return response?.body || response?.data || response || null;
+  }
+
+  openCreatedProperty() {
+    if (!this.canOpenCreatedProperty) {
+      return;
+    }
+
+    this.close.emit();
+    this.router.navigate(['home/property', this.createdPropertyId]);
   }
 
   submit() {
-    this.submitError = '';
+    if (this.isSubmitting) {
+      return;
+    }
 
-    this.service.createPropety(this.propertyForm.value).subscribe({
-      next: () => {
-        this.close.emit();
-      },
-      error: (err) => {
-        this.submitError = this.errorMessageService.getMessage(
-          err,
-          'The property could not be saved.'
-        );
-      },
-    });
+    this.submitError = '';
+    this.isSubmitting = true;
+
+    let createdProperty: any;
+
+    this.service
+      .createPropety(this.propertyForm.value)
+      .pipe(
+        tap((response: any) => {
+          createdProperty = this.extractCreatedProperty(response);
+        }),
+        concatMap(() => {
+          const propertyId = createdProperty?.id;
+          if (!propertyId) {
+            return of(null);
+          }
+
+          return this.service.createBill(propertyId);
+        }),
+        finalize(() => {
+          this.isSubmitting = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          if (!createdProperty?.id) {
+            this.submitError = 'Property saved but ID was not returned. Please check the property list.';
+            return;
+          }
+
+          this.createdPropertyId = createdProperty.id;
+          this.createdPtin = createdProperty.ptin || '';
+          this.showSuccess = true;
+          this.step = 3;
+          this.setHeading();
+        },
+        error: (err) => {
+          this.submitError = this.errorMessageService.getMessage(
+            err,
+            'The property or billing could not be saved.'
+          );
+        },
+      });
   }
 }

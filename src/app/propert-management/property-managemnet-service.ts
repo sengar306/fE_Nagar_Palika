@@ -59,4 +59,9 @@ getRoadWidth(){
   let url=`${this.baseUrl}/api/master/loadRoadWidth`
   return this.http.get(url,{observe:'response'})
 }
+
+createBill(propertyId:number){
+  let url=`${this.baseUrl}/api/bill/generate/${propertyId}`
+ return this.http.post(url, {}, {observe:'response'})
+}
 }

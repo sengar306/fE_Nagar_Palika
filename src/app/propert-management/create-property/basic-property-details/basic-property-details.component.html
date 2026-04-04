@@ -108,11 +108,20 @@
 
     <div class="form-group">
       <label>Building Type</label>
+      <select formControlName="propertyType">
+        <option selected>Select Building Type</option>
+      @for (item of propertyCategories; track $index) {
+           <option [value]="item">{{item}}</option>
+      }
+      </select>
+    </div>
+     <div class="form-group">
+      <label>Construction Type</label>
       <select formControlName="builtType">
-        <option value="">Select Building Type</option>
-        <option value="kaccha">Temporary</option>
-        <option value="pakka">Permanent</option>
-        <option value="ardh_pakka">Semi-permanent</option>
+        <option [value]="">Select Building Type</option>
+      @for (item of contructionType; track $index) {
+           <option [value]="item">{{item}}</option>
+      }
       </select>
     </div>
 
