@@ -2,7 +2,11 @@
   <div class="modal-header">
     <div>
       <h2>{{ heading }}</h2>
-      <p>Step {{ step }} of 2</p>
+      @if (!showSuccess) {
+        <p>Step {{ step }} of 2</p>
+      } @else {
+        <p>Your property has been created.</p>
+      }
     </div>
     <button class="close-btn" type="button" (click)="closeModal()">x</button>
   </div>
@@ -17,28 +21,59 @@
       </app-error-alert>
     }
 
-    @if (step === 1) {
+    @if (showSuccess) {
+      <section class="success-card">
+        <div class="success-hero" aria-hidden="true">
+          <div class="hero-orb"></div>
+          <div class="hero-house">
+            <span class="roof"></span>
+            <span class="body"></span>
+            <span class="door"></span>
+          </div>
+          <div class="hero-check"></div>
+        </div>
+        <h3>Property Created</h3>
+        <p>
+          Your property has been saved successfully. PTIN:
+          <button class="ptin-link" type="button" (click)="openCreatedProperty()" [disabled]="!canOpenCreatedProperty">
+            {{ createdPropertyLabel }}
+          </button>
+        </p>
+        <small>Click the PTIN to open this property's details page.</small>
+      </section>
+    } @else if (step === 1) {
       <app-basic-property-details [propertyForm]="propertyForm"></app-basic-property-details>
     }
 
-    @if (step === 2) {
+    @if (!showSuccess && step === 2) {
       <app-additional-parameters [propertyForm]="propertyForm"></app-additional-parameters>
     }
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-back" type="button" (click)="prevStep()" [disabled]="step === 1">
-      Back
-    </button>
+    @if (showSuccess) {
+      <button class="btn btn-back" type="button" (click)="closeModal()">Close</button>
+      <div class="right-buttons">
+        <button class="btn btn-primary" type="button" (click)="openCreatedProperty()" [disabled]="!canOpenCreatedProperty">
+          Open Property
+        </button>
+      </div>
+    } @else {
+      <button class="btn btn-back" type="button" (click)="prevStep()" [disabled]="step === 1 || isSubmitting">
+        Back
+      </button>
 
-    <div class="right-buttons">
-      <button class="btn btn-clear" type="button" (click)="clearForm()">Clear</button>
+      <div class="right-buttons">
+        <button class="btn btn-clear" type="button" (click)="clearForm()" [disabled]="isSubmitting">Clear</button>
 
-      @if (step < 2) {
-        <button class="btn btn-primary" type="button" (click)="nextStep()">Next</button>
-      } @else {
-        <button class="btn btn-primary" type="button" (click)="submit()">Submit</button>
-      }
-    </div>
+        @if (step < 2) {
+          <button class="btn btn-primary" type="button" (click)="nextStep()" [disabled]="isSubmitting">Next</button>
+        } @else {
+          <button class="btn btn-primary" type="button" (click)="submit()" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+          </button>
+        }
+      </div>
+    }
   </div>
 </div>

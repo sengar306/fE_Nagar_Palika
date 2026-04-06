@@ -37,7 +37,6 @@ export class PropertyFloorDetailsComponent  implements OnInit {
 addFloor() {
   const mainPropertyType = this.propertyForm.get('propertyCategoryId')?.value; // Step 1 ki value
   let floorCategory = null;
-  // Agar Residential ya Commercial hai to wahi set karo, agar Mixed hai to null rakho
   if (mainPropertyType === 'Residential' || mainPropertyType === 'Commercial') {
     floorCategory = mainPropertyType;
   }
@@ -107,4 +106,9 @@ trackPropertyTypeChanges() {
   'कच्चा भवन या अन्य समस्त भवन',
   'पक्का भवन / RCC या RBC छत सहित'
 ];
+  propertyCategories = [
+    'Residential',
+    'Commercial',
+    'Mixed'
+  ];
 }

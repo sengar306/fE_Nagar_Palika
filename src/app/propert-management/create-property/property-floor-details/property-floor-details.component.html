@@ -24,13 +24,15 @@
             <div class="floor-form-grid">
       <div class="form-field">
   <label>Category</label>
-  <!-- [attr.disabled] use karenge taki agar Mixed na ho to dropdown lock ho jaye -->
-  <select formControlName="category" 
+  {{propertyForm.get('propertyType')?.value}}
+ @if( propertyForm.get('propertyType')?.value == 'Mixed'){
+    <select formControlName="category"   
           [attr.disabled]="propertyForm.get('propertyType')?.value !== 'Mixed' ? true : null">
     <option [ngValue]="null">Select Category</option>
     <option value="Residential">Residential</option>
     <option value="Commercial">Commercial</option>
   </select>
+ }
   
   @if(propertyForm.get('propertyType')?.value !== 'Mixed') {
     <small style="color: #666;">Fixed based on Property Type</small>

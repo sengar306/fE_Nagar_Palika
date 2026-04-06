@@ -18,7 +18,10 @@
     localities:any[]=[];
     isFetchingLocation = false;
     locationError = '';
-
+  contructionType: string[] = [
+   'PAKKA',
+   'KACCHA' ,
+     ];
     ownerships = [
     'Owner' ,
     'Occupy' 
@@ -119,4 +122,9 @@
       })
 
      }
+       propertyCategories = [
+    'Residential',
+    'Commercial',
+    'Mixed'
+  ];
   }

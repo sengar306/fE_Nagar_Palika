@@ -49,11 +49,11 @@
         <div *ngIf="floor.get('expanded')?.value" class="accordion-body">
           <div class="form-grid">
             <div class="form-group">
-              <label class="label">Total Area</label>
-              <input formControlName="builtUpArea" placeholder="Enter total area">
+              <label class="label">Covered Area</label>
+              <input formControlName="builtUpArea" placeholder="Enter Total Covered area">
             </div>
-
-            <div class="form-group">
+         @if(propertyForm.get('propertyType')?.value=='Mixed' ){
+                  <div class="form-group">
               <label class="label">Property Type</label>
               <select formControlName="category">
                 <option value="">Select Property Type</option>
@@ -62,20 +62,24 @@
               </select>
             </div>
 
+         }
+    
+
             <div class="form-group">
-              <label class="label">Construction Type</label>
-              <select formControlName="constructionType" class="custom-select">
+              <label class="label">Non Covered Area</label>
+              <input type="number"  placeholder="Enter Total Non Covered Area" formControlName="emptyArea">
+              <!-- <select formControlName="constructionType" class="custom-select">
                 <option value="">Select Usage Type</option>
                 @for (item of contructionType; track item) {
                   <option [value]="item">{{ item }}</option>
                 }
-              </select>
+              </select> -->
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="label">Occupancy</label>
               <input formControlName="occupancy" placeholder="Owner / Tenant">
-            </div>
+            </div> -->
 
             <div class="form-group full-width">
               <label class="label">Is Rented?</label>
