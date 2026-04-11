@@ -5,7 +5,7 @@
       @if (!showSuccess) {
         <p>Step {{ step }} of 2</p>
       } @else {
-        <p>Your property has been created.</p>
+        <p>{{ isEditMode ? 'Your property has been updated.' : 'Your property has been created.' }}</p>
       }
     </div>
     <button class="close-btn" type="button" (click)="closeModal()">x</button>
@@ -32,9 +32,9 @@
           </div>
           <div class="hero-check"></div>
         </div>
-        <h3>Property Created</h3>
+        <h3>{{ isEditMode ? 'Property Updated' : 'Property Created' }}</h3>
         <p>
-          Your property has been saved successfully. PTIN:
+          {{ isEditMode ? 'Your property has been updated successfully. PTIN:' : 'Your property has been saved successfully. PTIN:' }}
           <button class="ptin-link" type="button" (click)="openCreatedProperty()" [disabled]="!canOpenCreatedProperty">
             {{ createdPropertyLabel }}
           </button>
@@ -70,7 +70,7 @@
           <button class="btn btn-primary" type="button" (click)="nextStep()" [disabled]="isSubmitting">Next</button>
         } @else {
           <button class="btn btn-primary" type="button" (click)="submit()" [disabled]="isSubmitting">
-            {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+            {{ isSubmitting ? (isEditMode ? 'Updating...' : 'Submitting...') : (isEditMode ? 'Update' : 'Submit') }}
           </button>
         }
       </div>

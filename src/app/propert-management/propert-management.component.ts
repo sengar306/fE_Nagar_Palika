@@ -11,7 +11,6 @@ import { IconsModule } from 'src/icons/icons-module';
 import { ClickOutsideDirective } from '../directive/click-outside';
 import { ErrorAlertComponent } from '../shared/ui/error-alert/error-alert.component';
 import { ErrorMessageService } from '../shared/services/error-message.service';
-import { FeatherModule } from 'angular-feather';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -37,6 +36,7 @@ export class PropertManagementComponent implements OnInit {
   rowData: any[] = [];
   searchControl = new FormControl('');
   errorMessage = '';
+  selectedPropertyForEdit: any = null;
 
   gridApi: any;
   columnApi: any;
@@ -77,6 +77,14 @@ export class PropertManagementComponent implements OnInit {
     { headerName: 'Gender', field: 'gender', hide: true },
     { headerName: 'House No', field: 'houseNo' },
     { headerName: 'Old House No', field: 'oldHouseNo' },
+    {
+      headerName: 'Action',
+      field: '__action',
+      sortable: false,
+      filter: false,
+      width: 120,
+      cellRenderer: () => '<button class="ag-edit-btn">Edit</button>',
+    },
     // { headerName: 'Property Sequence No', field: 'propertySequenceNo' },
     // { headerName: 'Property Type ID', field: 'propertyTypeId' },
     // { headerName: 'Property Category ID', field: 'propertyCategoryId' },
@@ -231,12 +239,20 @@ export class PropertManagementComponent implements OnInit {
   }
 
   openModal() {
+    this.selectedPropertyForEdit = null;
+    this.isModal = true;
+    this.closeMenus();
+  }
+
+  openEditModal(property: any) {
+    this.selectedPropertyForEdit = property;
     this.isModal = true;
     this.closeMenus();
   }
 
   closeModal() {
     this.isModal = false;
+    this.selectedPropertyForEdit = null;
     this.getAllProperty();
   }
 
@@ -282,7 +298,17 @@ export class PropertManagementComponent implements OnInit {
     this.showColumnDropdown = false;
   }
 
+  onCellClicked(event: any) {
+    if (event?.colDef?.field === '__action') {
+      this.openEditModal(event.data);
+    }
+  }
+
   onRowClicked(event: any) {
+    if ((event?.event?.target as HTMLElement | null)?.closest('.ag-edit-btn')) {
+      return;
+    }
+
     this.router.navigate(['home/property', event.data.id]);
   }
 }

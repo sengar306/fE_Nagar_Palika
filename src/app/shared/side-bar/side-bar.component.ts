@@ -24,6 +24,11 @@ export class SideBarComponent implements OnInit {
       route: '/home/property',
       hint: 'Search and manage records',
     },
+    {
+      label: 'Bill Payment',
+      route: '/home/bill-payment',
+      hint: 'Process bill payments',
+    },
   ];
 
   constructor(

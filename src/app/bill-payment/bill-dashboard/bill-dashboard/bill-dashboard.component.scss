@@ -1,4 +1,4 @@
-.property-shell {
+.bill-shell {
   display: grid;
   gap: 1rem;
   position: relative;
@@ -17,7 +17,6 @@
   gap: 1rem;
   padding: 1.3rem;
   overflow: visible;
-  position: relative;
   z-index: 100;
 }
 
@@ -42,9 +41,9 @@
   width: 46px;
   height: 46px;
   border-radius: 16px;
-
-align-items: center;
-justify-content: center;}
+  align-items: center;
+  justify-content: center;
+}
 
 .icon {
   width: 18px;
@@ -72,20 +71,12 @@ justify-content: center;}
   overflow: hidden;
 }
 
-.filter-popup,
-.action-dropdown {
+.action-dropdown,
+.column-dropdown {
   display: grid;
   gap: 0.7rem;
 }
 
-.column-dropdown {
-  display: grid;
-  gap: 0.45rem;
-  max-height: 320px;
-  overflow: auto;
-}
-
-.column-item,
 .menu-item {
   display: flex;
   align-items: center;
@@ -94,7 +85,29 @@ justify-content: center;}
   border: 0;
   padding: 0.8rem 0.9rem;
   border-radius: 16px;
+  text-align: left;
+  cursor: pointer;
+}
 
+.menu-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.column-dropdown {
+  gap: 0.45rem;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.column-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  border: 0;
+  padding: 0.8rem 0.9rem;
+  border-radius: 16px;
   text-align: left;
   cursor: pointer;
 }
@@ -117,14 +130,13 @@ justify-content: center;}
   height: 560px;
 }
 
-:host ::ng-deep .ag-edit-btn {
-  border: 0;
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
-  background: linear-gradient(135deg, #0f766e, #115e59);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
+.status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  color: #0f766e;
 }
 
 .modal-overlay {
@@ -138,8 +150,73 @@ justify-content: center;}
   z-index: 2000;
 }
 
-.modal-box {
-  width: min(1080px, 100%);
+.payment-modal {
+  width: min(720px, 100%);
+  padding: 1.25rem;
+}
+
+.modal-header,
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal-header {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.modal-header p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+}
+
+.close-btn {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 1.25rem 0;
+}
+
+.payment-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field span {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 46px;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  padding: 0.75rem 0.9rem;
+  background: var(--surface-strong);
+}
+
+.modal-footer {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
 }
 
 @media (max-width: 900px) {
@@ -163,7 +240,6 @@ justify-content: center;}
     top: calc(100% + 0.5rem);
     width: 100%;
     max-width: 100%;
-    z-index: 9999;
   }
 
   .grid-meta {
@@ -173,5 +249,16 @@ justify-content: center;}
 
   .grid-shell {
     height: 480px;
+  }
+
+  .payment-form {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-header,
+  .modal-footer,
+  .status-card {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
