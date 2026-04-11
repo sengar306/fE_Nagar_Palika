@@ -1,0 +1,77 @@
+
+
+@if (isPaymentModalOpen) {
+  <div class="modal-overlay">
+    <div class="payment-modal card-shell">
+      <div class="modal-header">
+        <div>
+          <h2>Bill Payment at Counter</h2>
+          <p>Counter par payment receive karne ke liye bill details verify karke entry save karein.</p>
+        </div>
+        <button class="close-btn" type="button" (click)="closePaymentModal()" aria-label="Close payment form">
+          <i-feather name="x" class="icon"></i-feather>
+        </button>
+      </div>
+
+      <form class="modal-body payment-form" [formGroup]="paymentForm" (ngSubmit)="submitCounterPayment()">
+        <!-- <label class="field">
+          <span>Bill No</span>
+          <select formControlName="billNo" (change)="onBillSelectionChange($event)">
+            <option value="">Select bill</option>
+            <option *ngFor="let bill of allBills" [value]="bill.billNo" [disabled]="bill.status === 'Paid'">
+              {{ bill.billNo }} - {{ bill.ownerName }} ({{ bill.status }})
+            </option>
+          </select>
+        </label> -->
+
+        <label class="field">
+          <span>Property ID</span>
+          <select formControlName="propertyId" (change)="onPropertySelectionChange($event)">
+            <option value="">Select property</option>
+            <option *ngFor="let property of properties" [value]="property.propertyId">
+              {{ property.propertyId }} - {{ property.ownerName }} (PTIN: {{ property.ptin || 'N/A' }})
+            </option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Payment Mode</span>
+          <select formControlName="paymentMode">
+            <option value="">Select Payment Mode</option>
+            <option *ngFor="let mode of paymentModeOptions" [value]="mode.value">{{ mode.label }}</option>
+          </select>
+        </label>
+
+        @if (isSpecificTaxMode) {
+        <label class="field">
+          <span>Tax Type</span>
+          <select formControlName="taxType">
+            <option *ngFor="let type of taxTypeOptions" [value]="type">{{ type }}</option>
+          </select>
+        </label>
+        }
+
+        @if (requiresAmount) {
+        <label class="field">
+          <span>Amount</span>
+          <input type="number" formControlName="amount" min="0" placeholder="Enter amount">
+        </label>
+        }
+
+        @if (requiresYear) {
+        <label class="field">
+          <span>Year</span>
+          <input type="number" formControlName="year" min="2000" placeholder="Enter bill year">
+        </label>
+        }
+      </form>
+
+      <div class="modal-footer">
+        <button class="btn btn-back" type="button" (click)="closePaymentModal()">Cancel</button>
+        <button class="btn btn-primary" type="button" [disabled]="isSubmitting" (click)="submitCounterPayment()">
+          {{ isSubmitting ? 'Saving...' : 'Save Payment' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

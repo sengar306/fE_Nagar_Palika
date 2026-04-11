@@ -23,6 +23,11 @@ export const routes: Routes = [
         path: 'property/:id',
         component: PropertyDetailsComponent,
       },
+        {
+    path:'bill-payment',
+    loadChildren: () => import('./bill-payment/bill-dashboard/bill-dashboard-module').then(m => m.BillDashboardModule),
+    canActivate: [authGuard]
+  }
     ],
   },
   {
@@ -30,4 +35,5 @@ export const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
+
 ];

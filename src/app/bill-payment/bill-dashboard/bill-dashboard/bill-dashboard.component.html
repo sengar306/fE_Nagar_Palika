@@ -1,0 +1,102 @@
+<section class="bill-shell">
+  <div class="toolbar card-shell" appClickOutside (clickOutside)="closeMenus()">
+    <div class="toolbar-copy">
+      <h2 class="section-title">Bill Dashboard</h2>
+      <p class="section-subtitle">Search, filter, and manage municipal billing records in a responsive view.</p>
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="search-wrap">
+        <input
+          type="text"
+          placeholder="Search bill no, PTIN, owner..."
+          class="search-input"
+          [formControl]="searchControl">
+      </div>
+
+      <button type="button" class="icon-btn" (click)="toggleColumnMenu()" aria-label="Choose columns">
+        <i-feather name="eye" class="icon"></i-feather>
+      </button>
+
+      <button type="button" class="icon-btn" (click)="toggleActionMenu()" aria-label="Open actions">
+        <span class="dots">...</span>
+      </button>
+    </div>
+
+    @if (showActionMenu) {
+      <div class="floating-panel action-dropdown">
+        <button type="button" class="menu-item" (click)="openPaymentModal()">
+          <i-feather name="credit-card" class="menu-icon"></i-feather>
+          <span>Bill Payment at Counter</span>
+        </button>
+
+        <select [value]="selectedStatus" (change)="filterStatus($event)">
+          <option value="">All status</option>
+          <option value="Paid">Paid</option>
+          <option value="Unpaid">Unpaid</option>
+          <option value="Pending">Pending</option>
+        </select>
+
+        <button type="button" class="btn btn-clear" (click)="resetFilters()">Reset filters</button>
+      </div>
+    }
+
+    @if (showColumnDropdown) {
+      <div class="floating-panel column-dropdown">
+        <div *ngFor="let col of colDefs" class="column-item" (click)="toggleColumn(col)">
+          <i-feather [name]="isColumnVisible(col) ? 'eye' : 'eye-off'" class="icon"></i-feather>
+          <span>{{ col.headerName }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (errorMessage) {
+    <app-error-alert
+      title="Bill data unavailable"
+      [message]="errorMessage"
+      [showRetry]="true"
+      (retry)="getAllBills()">
+    </app-error-alert>
+  }
+
+  @if (successMessage) {
+    <div class="status-card card-shell">
+      <strong>Payment updated</strong>
+      <span>{{ successMessage }}</span>
+    </div>
+  }
+
+  <div class="grid-card card-shell">
+    <div class="grid-meta">
+      <span>{{ rowData.length }} bills loaded</span>
+      <strong>
+        @if (selectedBill) {
+          Selected bill: {{ selectedBill.billNo }}
+        } @else {
+          Bill dashboard view
+        }
+      </strong>
+    </div>
+
+    <div class="grid-shell ag-theme-alpine">
+      <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        [rowData]="rowData"
+        [columnDefs]="colDefs"
+        [theme]="'legacy'"
+        [overlayNoRowsTemplate]="'<span class=&quot;ag-overlay-no-rows-center&quot;>No bills found for selected filters.</span>'"
+        [pagination]="true"
+        [paginationPageSize]="10"
+        [paginationPageSizeSelector]="false"
+        [animateRows]="true"
+        (gridReady)="onGridReady($event)"
+        (rowClicked)="onRowClicked($event)">
+      </ag-grid-angular>
+    </div>
+  </div>
+</section>
+
+@if (shouldLoadBillPayment) {
+  <app-bill-payment></app-bill-payment>
+}

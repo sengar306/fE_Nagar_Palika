@@ -26,11 +26,15 @@ export class PropertyManagemnetService {
        let url=`${this.baseUrl}/api/master/localities?wardId=${ward}`
     return this.http.get(url,{observe:'response'})
   }
-  createPropety(body:any){
+createPropety(body:any){
     let url = `${this.baseUrl}/api/property/create`
    return this.http.post(url,body,{observe:'response'})
 
   }
+updateProperty(propertyId: number | string, body: any) {
+  const url = `${this.baseUrl}/api/property/update/${propertyId}`;
+  return this.http.put(url, body, { observe: 'response' });
+}
 getAllProperty(params:any){
       let url = `${this.baseUrl}/api/property/get_all_property`
   return this.http.get(url, {

@@ -39,15 +39,14 @@
     ){}
 
     ngOnInit(){
-
-    
       this.loadRoadWidth()
       this.loadZones();
 
   // Zone change
   this.propertyForm.get('zone')?.valueChanges.subscribe((zone:any)=>{
-   console.log(zone)
-      this.loadWards(zone.id);
+      if (zone?.id) {
+        this.loadWards(zone.id);
+      }
     
   });
 
@@ -66,21 +65,35 @@
     
       this.propertyService.getZones().subscribe((res:any)=>{
         this.zones = res.body;
-          console.log(this.zones)   
+        this.restoreLocationSelections();
       });
     }
 
     loadWards(zoneId:number){
       this.propertyService.getWard(zoneId).subscribe((res:any)=>{
         this.wards = res.body;
-        this.localities=[];
-        this.propertyForm.patchValue({ward:null,locality:null});
+        const selectedWardId = this.propertyForm.get('ward')?.value?.id;
+        const matchedWard = this.wards.find((ward: any) => ward.id === selectedWardId) || null;
+
+        this.propertyForm.patchValue({ ward: matchedWard }, { emitEvent: false });
+
+        if (matchedWard?.id) {
+          this.loadLocalities(matchedWard.id);
+        } else {
+          this.localities = [];
+          this.propertyForm.patchValue({ locality: null }, { emitEvent: false });
+        }
       });
     }
 
     loadLocalities(wardId:number){
       this.propertyService.getLocality(wardId).subscribe((res:any)=>{
         this.localities = res.body;
+        const selectedLocalityId = this.propertyForm.get('locality')?.value?.id;
+        const matchedLocality =
+          this.localities.find((locality: any) => locality.id === selectedLocalityId) || null;
+
+        this.propertyForm.patchValue({ locality: matchedLocality }, { emitEvent: false });
       });
     }
 
@@ -117,14 +130,33 @@
         next:(res:any)=>{
           if (res){
             this.roadWidth=res.body
+            const selectedRoadWidthId = this.propertyForm.get('roadWidth')?.value?.id;
+            const matchedRoadWidth =
+              this.roadWidth.find((item: any) => item.id === selectedRoadWidthId) || null;
+
+            if (matchedRoadWidth) {
+              this.propertyForm.patchValue({ roadWidth: matchedRoadWidth }, { emitEvent: false });
+            }
           }
         }
       })
 
      }
-       propertyCategories = [
+  propertyCategories = [
     'Residential',
     'Commercial',
     'Mixed'
   ];
+
+  private restoreLocationSelections() {
+    const selectedZoneId = this.propertyForm.get('zone')?.value?.id;
+    const matchedZone = this.zones.find((zone: any) => zone.id === selectedZoneId) || null;
+
+    if (!matchedZone) {
+      return;
+    }
+
+    this.propertyForm.patchValue({ zone: matchedZone }, { emitEvent: false });
+    this.loadWards(matchedZone.id);
+  }
   }
